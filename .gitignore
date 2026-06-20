@@ -1,0 +1,24 @@
+# dependencies / build
+node_modules/
+dist/
+build/
+
+# secrets & environment
+.env
+.env.*
+*.key
+*.pem
+
+# PocketBase runtime data (never commit)
+pb_data/
+pb_migrations/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# archives / images / local artifacts
+*.zip
+*.log

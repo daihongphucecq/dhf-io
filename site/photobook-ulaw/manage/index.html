@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Quản lý · Photobook ULAW</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a1422; --bg-soft:#0f1d30; --bg-2:#0c1828; --line:#182742; --line-2:#22344f;
+    --ink:#e8eef7; --dim:#8da3c0; --faint:#6f86a8;
+    --blue:#4da3ff; --blue-deep:#2b6fd6; --amber:#f0b357; --green:#4ade80; --red:#ff6b6b;
+    --mono:'JetBrains Mono',ui-monospace,monospace; --disp:'Space Grotesk',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+  .wrap{max-width:920px;margin:0 auto;padding:18px 16px 70px}
+  input,select,button{font-family:inherit}
+  ::placeholder{color:var(--faint)}
+
+  .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .login-card{width:100%;max-width:380px;background:var(--bg-soft);border:1px solid var(--line);border-radius:16px;padding:34px 28px}
+  .brand{font-family:var(--mono);font-weight:700;font-size:14px}.brand b{color:var(--blue)}
+  .login-card h1{font-family:var(--disp);font-size:20px;font-weight:600;margin:14px 0 4px}
+  .login-card p{color:var(--dim);font-size:13px;margin-bottom:20px}
+  label{display:block;font-size:12.5px;color:var(--dim);margin:12px 0 6px;font-weight:500}
+  .inp{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:9px;padding:11px 13px;color:var(--ink);font-size:14px}
+  .inp:focus{border-color:var(--blue);outline:none}
+  .btn{background:linear-gradient(180deg,#6cb4ff,var(--blue));color:#06101f;font-weight:700;border:none;border-radius:10px;padding:11px 18px;font-size:14px;cursor:pointer}
+  .btn:hover{filter:brightness(1.05)} .btn:disabled{opacity:.55;cursor:not-allowed}
+  .btn-ghost{background:transparent;border:1px solid var(--line-2);color:var(--dim)}
+  .btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+  .btn-ok{background:transparent;border:1px solid #1f6e3f;color:var(--green)} .btn-ok:hover{background:rgba(74,222,128,.08)}
+  .btn-warn{background:transparent;border:1px solid #6e561f;color:var(--amber)} .btn-warn:hover{background:rgba(240,179,87,.08)}
+  .btn-danger{background:transparent;border:1px solid #5a2630;color:var(--red)} .btn-danger:hover{background:rgba(255,107,107,.08)}
+  .btn-sm{padding:7px 11px;font-size:12.5px;border-radius:8px}
+  .login .btn{width:100%;margin-top:18px;padding:12px}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:18px}
+  .topbar .t{font-family:var(--disp);font-weight:600;font-size:18px}
+
+  .grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .kpi{background:var(--bg-soft);border:1px solid var(--line);border-radius:13px;padding:13px 14px}
+  .kpi .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  .kpi .v{font-family:var(--disp);font-weight:600;font-size:22px;margin-top:4px}
+  .kpi.money .v{color:var(--green)} .kpi.serve .v{color:var(--blue)}
+
+  .panel{background:var(--bg-soft);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+  .panel h2{font-family:var(--disp);font-size:15px;font-weight:600;margin-bottom:14px}
+  .cur{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .cur .big{font-family:var(--disp);font-weight:700;font-size:48px;color:var(--blue);font-variant-numeric:tabular-nums;line-height:1}
+  .cur .big small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--faint);font-weight:500;margin-bottom:2px}
+  .fields{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+  .fld{min-width:120px} .fld label{margin-top:0}
+  .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .tablewrap{overflow-x:auto;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);position:sticky;top:0;background:var(--bg-soft)}
+  tr:last-child td{border-bottom:none}
+  td .inp{padding:6px 8px;width:84px;font-size:13px}
+  td select.inp{width:120px}
+  .num{font-family:var(--mono);font-weight:700}
+  .badge{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:999px;border:1px solid var(--line)}
+  .badge.served{color:var(--green);border-color:#1f6e3f} .badge.absent{color:var(--amber);border-color:#6e561f} .badge.waiting{color:var(--dim)}
+  .smp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:14px}
+  .smp{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+  .smp img{width:100%;height:92px;object-fit:cover;display:block}
+  .smp .del{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:7px;border:none;background:rgba(255,107,107,.92);color:#fff;font-size:13px;cursor:pointer;line-height:1}
+  input[type=file].inp{padding:8px 10px}
+
+  .row-cfg{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--dim)}
+  #toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:99}
+  .toast{background:var(--bg-soft);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:10px;padding:11px 15px;font-size:13px;max-width:320px;animation:tin .2s}
+  .toast.ok{border-left-color:var(--green)} .toast.err{border-left-color:var(--red)}
+  @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+  .hidden{display:none!important}
+  .hint{font-size:12px;color:var(--faint);margin-top:8px}
+  @media(max-width:560px){ .grid6{grid-template-columns:repeat(2,1fr)} .cur .big{font-size:40px} }
+</style>
+</head>
+<body>
+
+<div id="login" class="login">
+  <form class="login-card" id="loginForm">
+    <div class="brand">dhf<b>.io.vn</b> · Photobook</div>
+    <h1>Quản lý lấy số</h1>
+    <p>Nhập mật khẩu quản lý để vào bảng điều khiển.</p>
+    <label for="mk">Mật khẩu quản lý</label>
+    <input class="inp" id="mk" type="password" autocomplete="current-password" required>
+    <button class="btn" type="submit" id="loginBtn">Vào quản lý</button>
+    <div class="hint" id="loginErr"></div>
+  </form>
+</div>
+
+<div id="app" class="wrap hidden">
+  <div class="topbar">
+    <div class="t" id="evTitle">Photobook ULAW</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-ghost btn-sm" id="refreshBtn">↻ Làm mới</button>
+      <button class="btn-ghost btn-sm" id="logoutBtn">Thoát</button>
+    </div>
+  </div>
+
+  <div class="grid6">
+    <div class="kpi serve"><div class="k">Đang phục vụ</div><div class="v" id="kServing">0</div></div>
+    <div class="kpi"><div class="k">Đã cấp số</div><div class="v" id="kIssued">0</div></div>
+    <div class="kpi"><div class="k">Đang chờ</div><div class="v" id="kWaiting">0</div></div>
+    <div class="kpi"><div class="k">Đã chụp</div><div class="v" id="kServed">0</div></div>
+    <div class="kpi"><div class="k">Vắng mặt</div><div class="v" id="kAbsent">0</div></div>
+    <div class="kpi money"><div class="k">Tổng thu</div><div class="v" id="kMoney">0₫</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Khách hiện tại</h2>
+    <div class="cur">
+      <div class="big"><small>ĐANG PHỤC VỤ</small><span id="curNum">0</span></div>
+      <div class="fields">
+        <div class="fld"><label>Số tấm đã chụp</label><input class="inp" id="curPhotos" type="number" min="0" value="0"></div>
+        <div class="fld"><label>Số tiền (₫)</label><input class="inp" id="curAmount" type="number" min="0" step="1000" value="0"></div>
+      </div>
+    </div>
+    <div class="acts">
+      <button class="btn-ok btn" id="btnServed">✔ Đã chụp &amp; gọi số tiếp</button>
+      <button class="btn-warn btn" id="btnAbsent">✖ Vắng mặt &amp; gọi số tiếp</button>
+      <button class="btn-ghost btn" id="btnNext">Gọi số tiếp theo →</button>
+    </div>
+    <div class="hint">Mẹo: nhập số tấm + tiền rồi bấm "Đã chụp &amp; gọi số tiếp". Muốn nhảy tới số bất kỳ thì sửa ở bảng dưới hoặc dùng cấu hình.</div>
+  </div>
+
+  <div class="panel" style="padding-bottom:8px">
+    <h2>Danh sách số (<span id="tCount">0</span>)</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Số</th><th>Trạng thái</th><th>Số tấm</th><th>Tiền (₫)</th><th>Giờ</th><th></th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="hint" id="emptyHint" style="padding:10px 2px">Chưa có ai lấy số.</div>
+  </div>
+
+  <div class="panel">
+    <h2>Ảnh mẫu — gợi ý tạo dáng</h2>
+    <div class="row-cfg">
+      <div class="fld"><label>Chọn ảnh (JPG/PNG/WebP)</label><input class="inp" id="smpFile" type="file" accept="image/jpeg,image/png,image/webp"></div>
+      <div class="fld" style="flex:1;min-width:160px"><label>Chú thích (tùy chọn)</label><input class="inp" id="smpCap" placeholder="VD: Dáng nhóm 3 người"></div>
+      <button class="btn btn-sm" id="smpBtn">+ Thêm ảnh</button>
+    </div>
+    <div class="smp-grid" id="smpList"></div>
+    <div class="hint">Ảnh hiện ở nút "Gợi ý tạo dáng" trên trang công khai để khách tham khảo. Có thể thêm dần.</div>
+  </div>
+
+  <div class="panel">
+    <h2>Cấu hình sự kiện</h2>
+    <div class="row-cfg">
+      <div class="fld" style="flex:1;min-width:200px"><label>Tên sự kiện</label><input class="inp" id="cfgTitle"></div>
+      <div class="fld"><label>Phút / khách</label><input class="inp" id="cfgMinutes" type="number" min="1" value="3"></div>
+      <label class="toggle"><input type="checkbox" id="cfgActive"> Đang mở nhận khách</label>
+      <button class="btn btn-sm" id="saveCfg">Lưu cấu hình</button>
+    </div>
+    <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px">
+      <button class="btn-danger btn btn-sm" id="resetBtn">⟳ Bắt đầu lại (xoá toàn bộ số)</button>
+      <span class="hint" style="margin-left:8px">Dùng khi bắt đầu một ngày/đợt mới. Không thể hoàn tác.</span>
+    </div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+(function(){
+  var PB = location.origin.indexOf('dhf.io.vn') > -1 ? '' : 'http://127.0.0.1:8091';
+  var $ = function(id){ return document.getElementById(id); };
+  var KEY='pbk_mkey';
+  var mkey = localStorage.getItem(KEY) || '';
+  var state = { config:{}, tickets:[] };
+
+  function toast(m, t){ var d=document.createElement('div'); d.className='toast '+(t||''); d.textContent=m; $('toasts').appendChild(d); setTimeout(function(){ d.remove(); }, 3200); }
+  function vnd(n){ n=Math.round(n||0); return n.toLocaleString('vi-VN')+'₫'; }
+  function fmtTime(iso){ if(!iso) return '—'; var d=new Date(iso); if(isNaN(d)) return '—'; return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2); }
+
+  function admin(action, extra){
+    var body = Object.assign({ mkey:mkey, action:action }, extra||{});
+    return fetch(PB + '/api/photobook/admin', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'omit', body: JSON.stringify(body) })
+      .then(function(r){ return r.json().then(function(d){ return { ok:r.ok, status:r.status, d:d }; }); });
+  }
+
+  function showApp(){ $('login').classList.add('hidden'); $('app').classList.remove('hidden'); }
+  function showLogin(msg){ $('app').classList.add('hidden'); $('login').classList.remove('hidden'); if(msg) $('loginErr').textContent=msg; }
+
+  function refresh(){
+    return admin('list').then(function(res){
+      if(res.status===401){ localStorage.removeItem(KEY); showLogin('Sai mật khẩu quản lý.'); return; }
+      if(res.status===503){ showLogin('Máy chủ chưa cấu hình PHOTOBOOK_KEY.'); return; }
+      if(!res.ok){ toast('Lỗi tải dữ liệu ('+res.status+').','err'); return; }
+      state = res.d; render(); showApp();
+    }).catch(function(){ toast('Mất kết nối.','err'); });
+  }
+
+  function render(){
+    var c=state.config||{}, ts=state.tickets||[];
+    $('evTitle').textContent = c.title || 'Photobook ULAW';
+    var served=0, absent=0, waiting=0, money=0;
+    for(var i=0;i<ts.length;i++){ var t=ts[i];
+      if(t.status==='served'){ served++; money+=(t.amount||0); }
+      else if(t.status==='absent') absent++; else waiting++;
+    }
+    $('kServing').textContent=c.now_serving||0;
+    $('kIssued').textContent=c.last_number||0;
+    $('kWaiting').textContent=waiting;
+    $('kServed').textContent=served;
+    $('kAbsent').textContent=absent;
+    $('kMoney').textContent=vnd(money);
+    $('curNum').textContent=c.now_serving||0;
+
+    // prefill current ticket photos/amount if exists
+    var cur=null; for(var j=0;j<ts.length;j++){ if(ts[j].number===c.now_serving){ cur=ts[j]; break; } }
+    if(cur){ $('curPhotos').value=cur.photos||0; $('curAmount').value=cur.amount||0; } else { $('curPhotos').value=0; $('curAmount').value=0; }
+
+    $('cfgTitle').value=c.title||''; $('cfgMinutes').value=c.minutes||3; $('cfgActive').checked=!!c.active;
+    $('tCount').textContent=ts.length;
+    $('emptyHint').style.display = ts.length ? 'none' : 'block';
+
+    var rows=ts.slice().sort(function(a,b){ return a.number-b.number; });
+    var h='';
+    for(var k=0;k<rows.length;k++){ var r=rows[k];
+      h+='<tr data-n="'+r.number+'">'+
+        '<td class="num">#'+r.number+'</td>'+
+        '<td><select class="inp st"><option value="waiting"'+(r.status==='waiting'?' selected':'')+'>Đang chờ</option><option value="served"'+(r.status==='served'?' selected':'')+'>Đã chụp</option><option value="absent"'+(r.status==='absent'?' selected':'')+'>Vắng mặt</option></select></td>'+
+        '<td><input class="inp ph" type="number" min="0" value="'+(r.photos||0)+'"></td>'+
+        '<td><input class="inp am" type="number" min="0" step="1000" value="'+(r.amount||0)+'"></td>'+
+        '<td style="color:var(--dim)">'+fmtTime(r.at)+'</td>'+
+        '<td><button class="btn-ghost btn-sm save">Lưu</button></td>'+
+      '</tr>';
+    }
+    $('tbody').innerHTML=h;
+    var saves=$('tbody').querySelectorAll('.save');
+    for(var s=0;s<saves.length;s++){ saves[s].addEventListener('click', function(){
+      var tr=this.closest('tr'); var n=parseInt(tr.getAttribute('data-n'));
+      var st=tr.querySelector('.st').value, ph=tr.querySelector('.ph').value, am=tr.querySelector('.am').value;
+      this.disabled=true; var self=this;
+      admin('set_ticket', { number:n, status:st, photos:ph, amount:am }).then(function(res){
+        self.disabled=false;
+        if(res.ok){ toast('Đã lưu số #'+n,'ok'); refresh(); } else toast(res.d.error||'Lỗi lưu','err');
+      });
+    }); }
+  }
+
+  function recordAndNext(status){
+    var c=state.config||{}, n=c.now_serving||0;
+    if(n<1){ toast('Chưa gọi số nào. Bấm "Gọi số tiếp theo" trước.','err'); return; }
+    var extra={ number:n, status:status };
+    if(status==='served'){ extra.photos=$('curPhotos').value; extra.amount=$('curAmount').value; }
+    admin('set_ticket', extra).then(function(res){
+      if(!res.ok && res.status!==404){ toast(res.d&&res.d.error||'Lỗi','err'); return; }
+      admin('advance').then(function(r2){
+        if(!r2.ok){ toast(r2.d&&r2.d.error||'Lỗi gọi số','err'); refresh(); return; }
+        $('curPhotos').value=0; $('curAmount').value=0;
+        toast((status==='served'?'Đã ghi nhận #'+n+' đã chụp.':'#'+n+' vắng mặt.')+' Gọi số '+(r2.d.now_serving)+'.','ok');
+        refresh();
+      });
+    });
+  }
+
+  $('loginForm').addEventListener('submit', function(e){ e.preventDefault();
+    mkey=$('mk').value.trim(); if(!mkey) return;
+    $('loginBtn').disabled=true; $('loginErr').textContent='';
+    admin('list').then(function(res){
+      $('loginBtn').disabled=false;
+      if(res.ok){ localStorage.setItem(KEY,mkey); state=res.d; render(); showApp(); loadSamples(); }
+      else if(res.status===401) $('loginErr').textContent='Sai mật khẩu.';
+      else if(res.status===503) $('loginErr').textContent='Máy chủ chưa cấu hình PHOTOBOOK_KEY.';
+      else $('loginErr').textContent='Lỗi ('+res.status+').';
+    }).catch(function(){ $('loginBtn').disabled=false; $('loginErr').textContent='Mất kết nối máy chủ.'; });
+  });
+  $('logoutBtn').addEventListener('click', function(){ localStorage.removeItem(KEY); mkey=''; showLogin(''); });
+  $('refreshBtn').addEventListener('click', function(){ refresh(); loadSamples(); });
+  $('btnServed').addEventListener('click', function(){ recordAndNext('served'); });
+  $('btnAbsent').addEventListener('click', function(){ recordAndNext('absent'); });
+  $('btnNext').addEventListener('click', function(){ admin('advance').then(function(r){ if(!r.ok){ toast(r.d&&r.d.error||'Lỗi','err'); return; } toast('Gọi số '+r.d.now_serving,'ok'); refresh(); }); });
+  $('saveCfg').addEventListener('click', function(){
+    admin('config', { title:$('cfgTitle').value, minutes:$('cfgMinutes').value, active:$('cfgActive').checked }).then(function(res){
+      if(res.ok){ toast('Đã lưu cấu hình.','ok'); refresh(); } else toast(res.d.error||'Lỗi','err');
+    });
+  });
+  $('resetBtn').addEventListener('click', function(){
+    if(!confirm('Xoá TOÀN BỘ số và đưa về 0? Không thể hoàn tác.')) return;
+    if(!confirm('Chắc chắn chứ? Mọi lượt đã cấp sẽ bị xoá.')) return;
+    admin('reset').then(function(res){ if(res.ok){ toast('Đã bắt đầu lại.','ok'); refresh(); } else toast('Lỗi','err'); });
+  });
+
+  function loadSamples(){
+    fetch(PB+'/api/photobook/samples',{credentials:'omit'}).then(function(r){return r.json();}).then(function(d){
+      var g=$('smpList'); var arr=(d&&d.samples)||[];
+      if(!arr.length){ g.innerHTML='<div class="hint" style="grid-column:1/-1">Chưa có ảnh mẫu nào. Thêm ảnh ở trên ↑</div>'; return; }
+      var h=''; for(var i=0;i<arr.length;i++){ var s=arr[i]; h+='<div class="smp"><img src="'+PB+s.url+'?thumb=220x0" alt=""><button class="del" data-id="'+s.id+'" title="Xoá">✕</button></div>'; }
+      g.innerHTML=h;
+      var dels=g.querySelectorAll('.del');
+      for(var k=0;k<dels.length;k++){ dels[k].addEventListener('click', function(){
+        if(!confirm('Xoá ảnh mẫu này?')) return;
+        admin('sample_del',{ id:this.getAttribute('data-id') }).then(function(res){ if(res.ok){ toast('Đã xoá ảnh.','ok'); loadSamples(); } else toast('Lỗi xoá ảnh','err'); });
+      }); }
+    }).catch(function(){});
+  }
+  $('smpBtn').addEventListener('click', function(){
+    var f=$('smpFile').files[0]; if(!f){ toast('Chọn ảnh trước đã.','err'); return; }
+    var fd=new FormData(); fd.append('image', f);
+    var url=PB+'/api/photobook/sample?caption='+encodeURIComponent($('smpCap').value||'');
+    $('smpBtn').disabled=true;
+    fetch(url,{method:'POST',credentials:'omit',headers:{'X-Manager-Key':mkey},body:fd}).then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});}).then(function(res){
+      $('smpBtn').disabled=false;
+      if(res.ok){ toast('Đã thêm ảnh mẫu.','ok'); $('smpFile').value=''; $('smpCap').value=''; loadSamples(); }
+      else toast(res.d&&res.d.error||'Lỗi tải ảnh','err');
+    }).catch(function(){ $('smpBtn').disabled=false; toast('Lỗi kết nối','err'); });
+  });
+
+  if(mkey){ refresh(); loadSamples(); } else showLogin('');
+  setInterval(function(){ if($('app').classList.contains('hidden')) return; var a=document.activeElement; if(a && (a.tagName==='INPUT'||a.tagName==='SELECT')) return; refresh(); }, 8000);
+})();
+</script>
+</body>
+</html>

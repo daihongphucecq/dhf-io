@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Lấy số · Photobook ULAW</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a1422; --bg-soft:#0f1d30; --bg-2:#0c1828; --line:#182742; --line-2:#22344f;
+    --ink:#e8eef7; --dim:#8da3c0; --faint:#6f86a8;
+    --blue:#4da3ff; --blue-deep:#2b6fd6; --amber:#f0b357; --green:#4ade80; --red:#ff6b6b;
+    --mono:'JetBrains Mono','Be Vietnam Pro',ui-monospace,monospace; --disp:'Space Grotesk','Be Vietnam Pro',system-ui,sans-serif; --body:'Be Vietnam Pro','Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;overflow-x:clip}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:clip;max-width:100vw;
+    background-image:radial-gradient(1100px 620px at 50% -8%,rgba(77,163,255,.14),transparent 60%),radial-gradient(700px 500px at 110% 10%,rgba(240,179,87,.05),transparent 55%);}
+  .wrap{max-width:560px;margin:0 auto;padding:18px max(18px,env(safe-area-inset-right)) max(60px,calc(60px + env(safe-area-inset-bottom))) max(18px,env(safe-area-inset-left))}
+  a{color:var(--blue);text-decoration:none}
+
+  .top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 2px 18px}
+  .brand{font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:.02em}
+  .brand b{color:var(--blue)}
+  .top .tag{font-family:var(--mono);font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+  .top-right{display:flex;align-items:center;gap:9px}
+  .ulaw-badge{width:34px;height:34px;border-radius:50%;background:#fff;padding:2px;object-fit:contain;flex:0 0 auto;box-shadow:0 2px 10px -2px rgba(0,0,0,.45)}
+
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:8px}
+  h1{font-family:var(--disp);font-weight:700;font-size:clamp(24px,6.5vw,34px);line-height:1.12;margin:10px 0 4px}
+  .sub{color:var(--dim);font-size:14px;margin-bottom:18px}
+
+  .card{background:var(--bg-soft);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:14px}
+  .serve{position:relative;text-align:center;padding:26px 22px 24px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(77,163,255,.07),transparent);border-color:var(--line-2)}
+  .serve .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+  .serve .num{font-family:var(--disp);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+    font-size:clamp(84px,29vw,156px);line-height:.92;margin:6px 0 8px;
+    color:#fff;text-shadow:0 0 40px rgba(77,163,255,.5)}
+  .serve .num.bump{animation:serveBump .5s cubic-bezier(.22,1,.36,1)}
+  @keyframes serveBump{0%{transform:translateY(.16em) scale(.94);opacity:0}55%{opacity:1}100%{transform:none;opacity:1}}
+  @media(prefers-reduced-motion:reduce){ .serve .num.bump{animation:none} }
+  .serve .note{color:var(--faint);font-size:13px}
+  .live{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;color:var(--green);
+    border:1px solid #1f6e3f;border-radius:999px;padding:4px 10px;margin-top:14px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:pulse 1.8s infinite}
+  .live.closed{color:var(--amber);border-color:#6e561f} .live.closed .dot{background:var(--amber);animation:none;box-shadow:none}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}70%{box-shadow:0 0 0 9px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+  .stat{background:var(--bg-soft);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .stat .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:7px}
+  .stat .v{font-family:var(--disp);font-weight:600;font-size:26px;margin-top:6px}
+  .stat .v small{font-size:14px;color:var(--dim);font-weight:500}
+
+  .mine{border-color:var(--blue-deep);background:linear-gradient(180deg,rgba(77,163,255,.12),var(--bg-soft))}
+  .mine .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .mine .mynum{font-family:var(--disp);font-weight:700;font-size:40px;color:var(--blue);font-variant-numeric:tabular-nums}
+  .mine .st{font-size:13.5px;color:var(--dim);margin-top:6px}
+  .turn{border-color:#1f6e3f;background:linear-gradient(180deg,rgba(74,222,128,.16),var(--bg-soft));animation:glow 1.6s ease-in-out infinite alternate}
+  .turn .mynum{color:var(--green)}
+  @keyframes glow{from{box-shadow:0 0 0 0 rgba(74,222,128,.0)}to{box-shadow:0 0 26px -4px rgba(74,222,128,.5)}}
+  .done .mynum{color:var(--green)} .skip .mynum{color:var(--amber)}
+  .clock{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+  .clock .cell{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+  .clock .cell span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--faint);margin-bottom:5px}
+  .clock .cell b{font-family:var(--disp);font-weight:700;font-size:21px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .clock .cell b.mynum{font-size:30px;color:var(--blue)}
+  .mine.turn .cell b.mynum,.mine.done .cell b.mynum{color:var(--green)}
+  .mine.skip .cell b.mynum{color:var(--amber)}
+  @media(min-width:470px){ .clock{grid-template-columns:repeat(4,1fr)} }
+
+  .btn{display:block;width:100%;border:none;border-radius:14px;padding:18px;font-family:var(--disp);font-weight:700;font-size:18px;
+    color:#06101f;background:linear-gradient(180deg,#6cb4ff,var(--blue));cursor:pointer;transition:transform .12s,filter .12s;
+    box-shadow:0 14px 30px -14px rgba(77,163,255,.8)}
+  .btn:hover{transform:translateY(-1px);filter:brightness(1.05)} .btn:active{transform:translateY(0)}
+  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none;filter:none;box-shadow:none}
+  .btn .h{font-size:11px;font-weight:600;letter-spacing:.1em;opacity:.75;display:block;margin-top:3px;font-family:var(--mono)}
+
+  .issued{text-align:center;color:var(--faint);font-family:var(--mono);font-size:12.5px;margin:14px 0 2px}
+  .issued b{color:var(--ink)}
+
+  .steps-h,.served-h{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:24px 2px 12px}
+  .steps{display:grid;gap:10px}
+  .step{display:flex;gap:13px;align-items:flex-start;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:13px 15px}
+  .step .n{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:rgba(77,163,255,.14);color:var(--blue);
+    font-family:var(--disp);font-weight:700;font-size:14px;display:grid;place-items:center}
+  .step .tx{font-size:13.8px}.step .tx b{color:var(--ink)} .step .tx span{color:var(--dim)}
+
+  .served-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .served-bar .v{font-family:var(--disp);font-weight:600;font-size:18px}
+  .served-bar .v small{color:var(--dim);font-size:13px;font-weight:500}
+  .link-btn{background:transparent;border:1px solid var(--line-2);color:var(--blue);border-radius:9px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer}
+  .link-btn:hover{border-color:var(--blue)}
+
+  .ovl{position:fixed;inset:0;background:rgba(5,11,22,.72);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;z-index:50}
+  .ovl.on{display:flex}
+  .sheet{width:100%;max-width:560px;max-height:82vh;overflow:auto;background:var(--bg-soft);border:1px solid var(--line);border-radius:20px 20px 0 0;padding:20px}
+  .sheet-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .sheet-h h3{font-family:var(--disp);font-size:18px;font-weight:600}
+  .x{background:transparent;border:1px solid var(--line);color:var(--dim);border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer}
+  .plist{display:flex;flex-direction:column}
+  .pitem{display:flex;align-items:center;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line)}
+  .pitem:last-child{border-bottom:none}
+  .pno{font-family:var(--mono);font-weight:700;font-size:15px;width:54px;color:var(--ink);flex:0 0 auto}
+  .pinfo{flex:1;font-size:13.5px}
+  .pill{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+  .pill.ok{color:var(--green);border-color:#1f6e3f} .pill.no{color:var(--amber);border-color:#6e561f}
+  .empty{color:var(--faint);text-align:center;padding:24px;font-size:13.5px}
+  .pose-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:14px}
+  .pose-cta .pct{font-family:var(--disp);font-weight:600;font-size:14.5px}
+  .pose-cta .pcs{color:var(--dim);font-size:12.5px;margin-top:2px}
+  .pose-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .pose{position:relative;display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--bg-2)}
+  .pose img{width:100%;height:150px;object-fit:cover;display:block}
+  .pose span{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(5,11,22,.85));color:#fff;font-size:11.5px;padding:16px 9px 7px;line-height:1.3}
+  @media(min-width:480px){ .pose-grid{grid-template-columns:repeat(3,1fr)} }
+  .ft{text-align:center;margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+  .ft-logo{width:54px;height:54px;border-radius:50%;background:#fff;padding:3px;object-fit:contain;box-shadow:0 5px 18px -5px rgba(0,0,0,.55);margin:0 auto 11px;display:block}
+  .ft-name{font-family:var(--disp);font-weight:600;font-size:14.5px;color:var(--ink);letter-spacing:.01em}
+  .ft-tag{color:var(--dim);font-size:13px;margin-top:4px}
+  .ft-sub{color:var(--faint);font-size:11px;font-family:var(--mono);margin-top:9px;letter-spacing:.02em}
+
+  @media(min-width:600px){ .wrap{padding-top:30px} .ovl{align-items:center} .sheet{border-radius:20px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">dhf<b>.io.vn</b></div>
+    <div class="top-right">
+      <img class="ulaw-badge" src="/photobook-ulaw/ulaw-logo.png" alt="Đại học Luật TP.HCM" width="34" height="34">
+      <div class="tag">PHOTOBOOK · ULAW</div>
+    </div>
+  </div>
+
+  <div class="eyebrow"><span>🎞️ Lấy số chụp ảnh</span></div>
+  <h1 id="title">Photobook ULAW</h1>
+  <p class="sub" id="subtitle">Lấy số trực tuyến — theo dõi lượt của bạn ngay trên điện thoại.</p>
+
+  <div class="card serve">
+    <div class="lbl">Số đang phục vụ</div>
+    <div class="num" id="serving">—</div>
+    <div class="note" id="serveNote">Cảm ơn bạn đã kiên nhẫn chờ đợi.</div>
+    <div class="live" id="live"><span class="dot"></span><span id="liveTxt">Đang cập nhật…</span></div>
+  </div>
+
+  <div id="mineBox"></div>
+
+  <div class="stats" id="statsRow">
+    <div class="stat">
+      <div class="k">⏱ Ước tính chờ</div>
+      <div class="v" id="waitV">—</div>
+    </div>
+    <div class="stat">
+      <div class="k">👥 Đang chờ</div>
+      <div class="v" id="aheadV">—</div>
+    </div>
+  </div>
+
+  <button class="btn" id="takeBtn">Lấy số thứ tự<span class="h">Mỗi thiết bị lấy 1 số — không cần nhập thông tin</span></button>
+  <div class="issued">Đã cấp số: <b id="issued">—</b> lượt</div>
+
+  <div class="pose-cta">
+    <div><div class="pct">📸 Chưa biết tạo dáng?</div><div class="pcs">Xem vài mẫu ảnh để lấy cảm hứng nhé.</div></div>
+    <button class="link-btn" id="poseBtn">Gợi ý →</button>
+  </div>
+
+  <div class="steps-h">Hướng dẫn sử dụng</div>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div class="tx"><b>Bấm "Lấy số thứ tự".</b> <span>Số của bạn sẽ hiện ngay và được lưu trên máy này.</span></div></div>
+    <div class="step"><div class="n">2</div><div class="tx"><b>Theo dõi "Số đang phục vụ".</b> <span>Trang tự cập nhật — bạn có thể đi dạo, canh số gần tới thì quay lại.</span></div></div>
+    <div class="step"><div class="n">3</div><div class="tx"><b>Tới lượt, có mặt tại quầy chụp.</b> <span>Nếu gọi số mà vắng mặt sẽ được tính là bỏ qua.</span></div></div>
+  </div>
+
+  <div class="served-h">Đã phục vụ</div>
+  <div class="served-bar">
+    <div class="v"><span id="servedN">—</span> <small>lượt đã xong / vắng</small></div>
+    <button class="link-btn" id="detailBtn">Xem chi tiết →</button>
+  </div>
+
+  <footer class="ft">
+    <img class="ft-logo" src="/photobook-ulaw/ulaw-logo.png" alt="Đại học Luật TP.HCM" width="54" height="54">
+    <div class="ft-name">Đại học Luật TP.HCM</div>
+    <div class="ft-tag">Giữ trọn khoảnh khắc thanh xuân ✨</div>
+    <div class="ft-sub">Hệ thống lấy số trực tuyến · vận hành bởi dhf.io.vn</div>
+  </footer>
+</div>
+
+<div class="ovl" id="ovl">
+  <div class="sheet">
+    <div class="sheet-h"><h3>Chi tiết đã phục vụ</h3><button class="x" id="closeOvl">✕</button></div>
+    <div class="plist" id="plist"></div>
+  </div>
+</div>
+
+<div class="ovl" id="poseOvl">
+  <div class="sheet">
+    <div class="sheet-h"><h3>Gợi ý tạo dáng 📸</h3><button class="x" id="closePose">✕</button></div>
+    <div class="pose-grid" id="poseGrid"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var PB = location.origin.indexOf('dhf.io.vn') > -1 ? '' : 'http://127.0.0.1:8091';
+  var $ = function(id){ return document.getElementById(id); };
+
+  // device id (one number per device)
+  var dev = localStorage.getItem('pbk_device');
+  if(!dev){ dev = 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2,10); localStorage.setItem('pbk_device', dev); }
+  var myNum = parseInt(localStorage.getItem('pbk_number')||'0') || 0;
+  var prevTurn = false;
+
+  var last = null;
+
+  function fmtTime(iso){ if(!iso) return ''; var d=new Date(iso); if(isNaN(d)) return ''; var h=('0'+d.getHours()).slice(-2), m=('0'+d.getMinutes()).slice(-2); return h+':'+m; }
+  function fmtClock(d){ return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2); }
+  function nowHM(){ return fmtClock(new Date()); }
+  function safeTxt(t,fb){ t=(t==null?'':''+t); return (!t || t.indexOf('�')>-1) ? fb : t; }
+  function fmtWait(m){ m=Math.max(0,Math.round(m)); if(m<60) return m+' phút'; var h=Math.floor(m/60),mm=m%60; return mm ? (h+' giờ '+mm+' phút') : (h+' giờ'); }
+
+  function render(s){
+    last = s;
+    if(myNum && s.last_number!=null && myNum > s.last_number){ myNum=0; localStorage.removeItem('pbk_number'); localStorage.removeItem('pbk_taken_at'); prevTurn=false; }
+    $('title').textContent = safeTxt(s.title, 'Photobook ULAW');
+    var _sub = safeTxt(s.subtitle, '');
+    $('subtitle').textContent = (!_sub || _sub === 'Photobook · ULAW') ? 'Lấy số trực tuyến — theo dõi lượt của bạn ngay trên điện thoại.' : _sub;
+    var nsTxt = (s.now_serving>0) ? ('' + s.now_serving).padStart(3,'0') : '—';
+    var nEl=$('serving'); if(nEl.textContent!==nsTxt){ nEl.textContent=nsTxt; nEl.classList.remove('bump'); void nEl.offsetWidth; nEl.classList.add('bump'); }
+    $('issued').textContent = s.last_number!=null ? s.last_number : '—';
+    $('servedN').textContent = (s.served||0) + (s.absent||0);
+
+    var live=$('live'), lt=$('liveTxt');
+    if(s.active){ live.className='live'; lt.textContent='Đang mở · cập nhật trực tiếp'; $('takeBtn').disabled=false; $('serveNote').textContent=(s.now_serving>0)?'Cảm ơn bạn đã kiên nhẫn chờ đợi.':'Sự kiện sắp bắt đầu — bấm "Lấy số thứ tự" để vào hàng đợi nhé!'; }
+    else { live.className='live closed'; lt.textContent='Tạm đóng nhận khách'; $('takeBtn').disabled=true; $('serveNote').textContent='Sự kiện đang tạm đóng nhận khách — quay lại sau nhé.'; }
+
+    // general wait
+    var waitingAll = s.waiting||0;
+    var mins = s.minutes||3;
+    $('statsRow').style.display = myNum ? 'none' : 'grid';
+    $('aheadV').innerHTML = waitingAll + ' <small>người</small>';
+    $('waitV').textContent = fmtWait(waitingAll*mins);
+
+    renderMine(s);
+    renderTake(s);
+  }
+
+  function myStatus(s){
+    if(!myNum) return null;
+    for(var i=0;i<(s.processed||[]).length;i++){ if(s.processed[i].number===myNum) return s.processed[i].status; }
+    return 'waiting';
+  }
+
+  function renderMine(s){
+    var box=$('mineBox');
+    if(!myNum){ box.innerHTML=''; return; }
+    var st = myStatus(s);
+    var mins=s.minutes||3, ns=s.now_serving||0;
+    var ahead = Math.max(0, myNum - ns);
+    var html='';
+    if(st==='served'){
+      html='<div class="card mine done"><div class="row"><div><div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint)">SỐ CỦA BẠN</div><div class="mynum">'+myNum+'</div></div><div style="font-size:30px">🎉</div></div><div class="st">Bạn đã chụp xong. Cảm ơn bạn!</div></div>';
+    } else if(st==='absent'){
+      html='<div class="card mine skip"><div class="row"><div><div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint)">SỐ CỦA BẠN</div><div class="mynum">'+myNum+'</div></div></div><div class="st">Số của bạn đã bị bỏ qua (vắng mặt). Liên hệ quầy nếu cần lấy lại số.</div></div>';
+    } else if(ns===myNum){
+      html='<div class="card mine turn"><div class="row"><div><div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--green)">ĐẾN LƯỢT BẠN!</div><div class="mynum">'+myNum+'</div></div><div style="font-size:30px">📸</div></div><div class="st">Mời bạn tới quầy chụp ngay nhé.</div></div>';
+    } else if(ns>myNum){
+      html='<div class="card mine"><div class="row"><div><div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint)">SỐ CỦA BẠN</div><div class="mynum">'+myNum+'</div></div></div><div class="st">Đã qua lượt số của bạn. Vui lòng tới quầy hỏi nếu bạn vẫn muốn chụp.</div></div>';
+    } else {
+      html='<div class="card mine"><div class="row"><div><div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint)">SỐ CỦA BẠN</div><div class="mynum">'+myNum+'</div></div><div style="text-align:right"><div style="font-family:var(--disp);font-weight:600;font-size:22px">~'+(ahead*mins)+' <small style="font-size:13px;color:var(--dim)">phút</small></div><div style="font-size:12px;color:var(--faint)">còn '+ahead+' người trước bạn</div></div></div></div>';
+    }
+    var aheadP=Math.max(0, myNum-ns-1);
+    var cls='mine', msg='', waitTxt='~'+fmtWait(aheadP*mins), isTurn=false;
+    if(st==='served'){ cls='mine done'; msg='🎉 Bạn đã chụp xong. Cảm ơn bạn!'; waitTxt='Xong'; }
+    else if(st==='absent'){ cls='mine skip'; msg='Số của bạn đã bị bỏ qua (vắng mặt). Tới quầy nếu cần lấy lại số.'; waitTxt='—'; }
+    else if(ns===myNum){ cls='mine turn'; msg='📸 ĐẾN LƯỢT BẠN — mời tới quầy chụp — chúc bạn có thật nhiều kỷ niệm đẹp nhé!'; waitTxt='Đến lượt!'; isTurn=true; }
+    else if(ns>myNum){ cls='mine skip'; msg='Đã qua lượt số của bạn — vui lòng tới quầy hỏi nếu vẫn muốn chụp.'; waitTxt='Đã qua'; }
+    else if(myNum===ns+1){ cls='mine turn'; msg='✅ Sẵn sàng — đã tới số của bạn! Mời tới quầy chụp — chúc bạn có thật nhiều kỷ niệm đẹp nhé!'; waitTxt='Sẵn sàng ngay'; isTurn=true; }
+    else { cls='mine'; msg='Còn ~'+aheadP+' số trước bạn. Bạn có thể đi dạo, canh số gần tới thì quay lại nhé.'; }
+    var takenAt=parseInt(localStorage.getItem('pbk_taken_at')||'0')||0;
+    var takenTxt=takenAt?fmtClock(new Date(takenAt)):'—';
+    box.innerHTML='<div class="card '+cls+'"><div class="clock">'+
+      '<div class="cell"><span>SỐ CỦA BẠN</span><b class="mynum">'+myNum+'</b></div>'+
+      '<div class="cell"><span>BỐC SỐ LÚC</span><b>'+takenTxt+'</b></div>'+
+      '<div class="cell"><span>CÒN ĐỢI</span><b>'+waitTxt+'</b></div>'+
+      '<div class="cell"><span>BÂY GIỜ</span><b id="clkNow">'+nowHM()+'</b></div>'+
+      '</div><div class="st">'+msg+'</div></div>';
+    if(isTurn && !prevTurn){ try{ if(navigator.vibrate) navigator.vibrate([200,80,200]); }catch(e){} }
+    prevTurn=isTurn;
+  }
+
+  function renderTake(s){
+    var b=$('takeBtn');
+    if(myNum){
+      b.style.display='none';
+    } else {
+      b.style.display='block';
+      if(b.firstChild) b.firstChild.textContent='Lấy số thứ tự';
+    }
+  }
+
+  function load(){
+    fetch(PB + '/api/photobook/state', { credentials:'omit' })
+      .then(function(r){ return r.json(); })
+      .then(render)
+      .catch(function(){ $('liveTxt').textContent='Mất kết nối — đang thử lại…'; $('live').className='live closed'; });
+  }
+
+  $('takeBtn').addEventListener('click', function(){
+    var b=$('takeBtn'); b.disabled=true; b.firstChild.textContent='Đang lấy số…';
+    fetch(PB + '/api/photobook/take', { method:'POST', headers:{'Content-Type':'application/json'}, credentials:'omit', body: JSON.stringify({ device: dev }) })
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok,d:d}; }); })
+      .then(function(res){
+        if(res.ok && res.d.number){ myNum=res.d.number; localStorage.setItem('pbk_number', ''+myNum); if(!localStorage.getItem('pbk_taken_at')) localStorage.setItem('pbk_taken_at', ''+Date.now()); load(); }
+        else { alert(res.d.error || 'Không lấy được số, thử lại.'); b.disabled=false; b.firstChild.textContent='Lấy số thứ tự'; }
+      })
+      .catch(function(){ alert('Lỗi kết nối, thử lại.'); b.disabled=false; b.firstChild.textContent='Lấy số thứ tự'; });
+  });
+
+  $('detailBtn').addEventListener('click', function(){
+    var list=$('plist'); var p=(last&&last.processed)?last.processed.slice():[];
+    p.sort(function(a,b){ return a.number-b.number; });
+    if(!p.length){ list.innerHTML='<div class="empty">Chưa có lượt nào được phục vụ.</div>'; }
+    else {
+      var h='';
+      for(var i=0;i<p.length;i++){ var it=p[i];
+        if(it.status==='served'){ h+='<div class="pitem"><div class="pno">#'+it.number+'</div><div class="pinfo">Đã chụp <b>'+(it.photos||0)+'</b> tấm'+(fmtTime(it.at)?(' · lúc '+fmtTime(it.at)):'')+'</div><span class="pill ok">xong</span></div>'; }
+        else { h+='<div class="pitem"><div class="pno">#'+it.number+'</div><div class="pinfo">Vắng mặt'+(fmtTime(it.at)?(' · lúc '+fmtTime(it.at)):'')+'</div><span class="pill no">vắng</span></div>'; }
+      }
+      list.innerHTML=h;
+    }
+    $('ovl').classList.add('on'); $('closeOvl').focus();
+  });
+  $('closeOvl').addEventListener('click', function(){ $('ovl').classList.remove('on'); });
+  $('ovl').addEventListener('click', function(e){ if(e.target===$('ovl')) $('ovl').classList.remove('on'); });
+
+  function escHtml(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
+  function escAttr(t){ return escHtml(t).replace(/"/g,'&quot;'); }
+  function loadSamples(){
+    var g=$('poseGrid'); g.innerHTML='<div class="empty">Đang tải…</div>';
+    fetch(PB+'/api/photobook/samples',{credentials:'omit'}).then(function(r){return r.json();}).then(function(d){
+      var arr=(d&&d.samples)||[];
+      if(!arr.length){ g.innerHTML='<div class="empty">Chưa có ảnh mẫu — sẽ cập nhật sớm nhé! 📸</div>'; return; }
+      var h=''; for(var i=0;i<arr.length;i++){ var s=arr[i];
+        var u=escAttr(PB+s.url); h+='<a class="pose" href="'+u+'" target="_blank" rel="noopener"><img loading="lazy" src="'+u+'?thumb=400x0" alt="Mẫu tạo dáng">'+(s.caption?'<span>'+escHtml(s.caption)+'</span>':'')+'</a>';
+      }
+      g.innerHTML=h;
+    }).catch(function(){ g.innerHTML='<div class="empty">Không tải được ảnh mẫu.</div>'; });
+  }
+  $('poseBtn').addEventListener('click', function(){ loadSamples(); $('poseOvl').classList.add('on'); $('closePose').focus(); });
+  $('closePose').addEventListener('click', function(){ $('poseOvl').classList.remove('on'); });
+  $('poseOvl').addEventListener('click', function(e){ if(e.target===$('poseOvl')) $('poseOvl').classList.remove('on'); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'||e.keyCode===27){ $('ovl').classList.remove('on'); $('poseOvl').classList.remove('on'); } });
+
+  load();
+  setInterval(load, 5000);
+  setInterval(function(){ var n=document.getElementById('clkNow'); if(n) n.textContent=nowHM(); }, 12000);
+})();
+</script>
+</body>
+</html>

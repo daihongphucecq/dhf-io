@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a1422">
+<title>Dai Hong Phuc — Computer Science student &amp; aspiring blue team engineer</title>
+<meta name="description" content="Dai Hong Phuc — first-year CS student in Ho Chi Minh City heading toward blue team / defensive security. Founder of HONQ, web developer, photographer.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://dhf.io.vn/">
+
+<!-- set theme + language before paint to avoid a flash -->
+<script>
+(function(){var d=document.documentElement;d.classList.add('js');
+ try{var l=localStorage.getItem('lang');if(l==='vi')d.setAttribute('lang','vi');}catch(e){}})();
+</script>
+<script src="/hydrate.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- Open Graph -->
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="dhf.io.vn">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://dhf.io.vn/">
+<meta property="og:title" content="Dai Hong Phuc — Computer Science student &amp; aspiring blue team engineer">
+<meta property="og:description" content="First-year CS student in Ho Chi Minh City heading toward blue team / defensive security. Founder of HONQ, freelance web developer, photographer.">
+<meta property="og:image" content="https://dhf.io.vn/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dai Hong Phuc — Defender in training">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dai Hong Phuc — Computer Science student &amp; aspiring blue team engineer">
+<meta name="twitter:description" content="First-year CS student in Ho Chi Minh City heading toward blue team / defensive security.">
+<meta name="twitter:image" content="https://dhf.io.vn/og-image.png">
+<meta name="twitter:image:alt" content="Dai Hong Phuc — Defender in training">
+<!-- Favicons / manifest -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style>
+  :root{
+    --bg:#0a1422; --bg-soft:#0f1d30; --bg-line:#182742;
+    --ink:#e8eef7; --ink-dim:#8da3c0; --ink-faint:#6f86a8; --ink-faint-deco:#506684;
+    --blue:#4da3ff; --blue-deep:#2b6fd6;
+    --amber:#f0b357; --amber-text:#f0b357;
+    --green:#4ade80; --green-text:#4ade80; --green-dot:#4ade80;
+    --btn-ink:#06101f;
+    --card-shadow:0 14px 40px -18px rgba(0,0,0,.7);
+    --nav-bg:rgba(10,20,34,.72);
+    --scrim:rgba(5,11,20,.6);
+    --grid-op:.14;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --maxw:1040px; --maxw-prose:680px;
+    --rail:134px; --ts-col:120px;
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --ease-in:cubic-bezier(.22,.61,.36,1);
+    --step--1:.833rem; --step-0:1rem; --step-1:1.25rem; --step-2:1.563rem;
+    --step-3:1.953rem; --step-4:2.441rem;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;overflow-x:clip}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:var(--step-0);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .4s var(--ease),color .4s var(--ease)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;height:auto;display:block}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+
+  /* ambient grid backdrop */
+  body::before{
+    content:"";position:fixed;inset:0;
+    background-image:linear-gradient(var(--bg-line) 1px,transparent 1px),linear-gradient(90deg,var(--bg-line) 1px,transparent 1px);
+    background-size:48px 48px;opacity:var(--grid-op);
+    -webkit-mask-image:radial-gradient(ellipse 85% 60% at 50% 0%,#000 30%,transparent 80%);
+    mask-image:radial-gradient(ellipse 85% 60% at 50% 0%,#000 30%,transparent 80%);
+    pointer-events:none;z-index:0;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:1}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* skip link */
+  .skip{position:absolute;left:14px;top:-60px;z-index:60;background:var(--blue);color:var(--btn-ink);font-family:var(--mono);font-size:13px;font-weight:700;padding:10px 16px;border-radius:8px;transition:top .2s var(--ease)}
+  .skip:focus{top:14px}
+
+  /* nav */
+  nav.bar{position:sticky;top:0;z-index:40;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:var(--nav-bg);border-bottom:1px solid transparent;transition:border-color .3s,background .4s}
+  nav.bar.scrolled{border-bottom-color:var(--bg-line)}
+  nav.bar.scrolled::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue) 50%,transparent);opacity:.55}
+  nav.bar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:14px}
+  .brand{font-family:var(--mono);font-weight:700;font-size:15px;letter-spacing:.02em;flex-shrink:0}
+  .brand span{color:var(--blue)}
+  .nav-right{display:flex;align-items:center;gap:6px}
+  .nav-left{display:flex;align-items:center;gap:13px;min-width:0}
+  .pbk-btn{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--amber);border:1px solid rgba(240,179,87,.42);border-radius:999px;padding:5px 12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:border-color .2s,background .2s,transform .2s}
+  .pbk-btn:hover{border-color:var(--amber);background:rgba(240,179,87,.09);transform:translateY(-1px)}
+  @media(max-width:560px){ .nav-left{gap:9px} .pbk-btn{font-size:11px;padding:5px 10px} .pbk-lbl{display:none} .pbk-btn::after{content:"Photobook"} }
+  .navlinks{display:flex;gap:26px;font-family:var(--mono);font-size:13px;color:var(--ink-dim)}
+  .navlinks a{position:relative;padding:6px 0;transition:color .22s var(--ease)}
+  .navlinks a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+  .navlinks a:hover,.navlinks a:focus-visible,.navlinks a.active{color:var(--blue)}
+  .navlinks a:hover::after,.navlinks a:focus-visible::after,.navlinks a.active::after{transform:scaleX(1)}
+
+  .iconbtn{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 10px;background:transparent;border:1px solid var(--bg-line);border-radius:9px;color:var(--ink-dim);font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;transition:color .22s var(--ease),border-color .22s var(--ease),transform .22s var(--ease)}
+  .iconbtn:hover,.iconbtn:focus-visible{color:var(--blue);border-color:var(--blue)}
+  .iconbtn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .lang-btn{letter-spacing:.06em}
+  .ig-btn svg{stroke-width:1.6}
+
+  .nav-toggle{display:none;position:relative;width:44px;height:44px;background:transparent;border:1px solid var(--bg-line);border-radius:9px;cursor:pointer}
+  .nav-toggle .bars,.nav-toggle .bars::before,.nav-toggle .bars::after{content:"";position:absolute;left:11px;width:22px;height:2px;background:var(--ink-dim);border-radius:2px;transition:transform .25s var(--ease),opacity .2s}
+  .nav-toggle .bars{top:21px}
+  .nav-toggle .bars::before{top:-7px}
+  .nav-toggle .bars::after{top:7px}
+  body.nav-open .nav-toggle .bars{background:transparent}
+  body.nav-open .nav-toggle .bars::before{transform:translateY(7px) rotate(45deg);background:var(--blue)}
+  body.nav-open .nav-toggle .bars::after{transform:translateY(-7px) rotate(-45deg);background:var(--blue)}
+  .nav-scrim{position:fixed;inset:0;z-index:38;background:var(--scrim);opacity:0;transition:opacity .25s var(--ease)}
+
+  /* hero */
+  header{position:relative;padding:clamp(110px,15vh,165px) 0 clamp(96px,12vh,140px);overflow:hidden}
+  .radar{position:absolute;top:56%;right:calc(50% - var(--maxw)/2 - 10px);transform:translateY(-50%);width:clamp(320px,46vw,600px);aspect-ratio:1;pointer-events:none;z-index:0;opacity:1;
+    -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 76%);mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 76%)}
+  .radar .ring{position:absolute;inset:0;margin:auto;border:1px solid var(--bg-line);border-radius:50%}
+  .radar .ring.r2{inset:16%}.radar .ring.r3{inset:33%}.radar .ring.r4{inset:50%}.radar .ring.r5{inset:67%}
+  .radar .ticks{position:absolute;inset:1%;border-radius:50%;background:repeating-conic-gradient(var(--bg-line) 0deg .4deg,transparent .4deg 6deg);
+    -webkit-mask-image:radial-gradient(circle,transparent 90%,#000 91%,#000 99%,transparent 100%);mask-image:radial-gradient(circle,transparent 90%,#000 91%,#000 99%,transparent 100%);opacity:.7}
+  .radar .cross{position:absolute;inset:0;margin:auto}
+  .radar .cross::before,.radar .cross::after{content:"";position:absolute;background:var(--bg-line);opacity:.4}
+  .radar .cross::before{left:50%;top:0;bottom:0;width:1px;transform:translateX(-.5px)}
+  .radar .cross::after{top:50%;left:0;right:0;height:1px;transform:translateY(-.5px)}
+  .radar .sweep{position:absolute;inset:0;border-radius:50%;
+    background:conic-gradient(from 0deg,rgba(77,163,255,.30),rgba(77,163,255,.05) 26deg,transparent 52deg);
+    -webkit-mask-image:radial-gradient(circle,#000 57%,transparent 73%);mask-image:radial-gradient(circle,#000 57%,transparent 73%);
+    animation:radar 11s linear infinite}
+  .radar .core{position:absolute;inset:0;margin:auto;width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px 2px rgba(77,163,255,.55)}
+  .radar .blip{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px 1px rgba(77,163,255,.6);animation:blip 11s linear infinite}
+  .radar .blip.b1{top:33%;left:63%}
+  .radar .blip.b2{top:61%;left:42%;background:var(--green);box-shadow:0 0 10px 1px rgba(74,222,128,.5);animation-delay:-5.5s}
+  @keyframes radar{to{transform:rotate(360deg)}}
+  @keyframes blip{0%,16%{opacity:0;transform:scale(.5)}22%{opacity:1;transform:scale(1)}46%,100%{opacity:0;transform:scale(.5)}}
+
+  .status{display:inline-flex;align-items:center;gap:9px;max-width:100%;font-family:var(--mono);font-size:12.5px;color:var(--ink-dim);border:1px solid var(--bg-line);border-radius:999px;padding:7px 15px;margin-bottom:28px;background:color-mix(in srgb,var(--bg-soft) 60%,transparent)}
+  .dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--green-dot);flex-shrink:0}
+  .dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--green-dot);animation:ring 2.4s var(--ease) infinite}
+  @keyframes ring{0%{transform:scale(1);opacity:.6}70%,100%{transform:scale(3.2);opacity:0}}
+
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(2.5rem,6vw + 1rem,4.25rem);line-height:1.06;letter-spacing:-.022em;margin-bottom:18px}
+  h1 .name-accent{display:inline-block;background:linear-gradient(180deg,var(--ink) 40%,var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .handle{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:14px;color:var(--ink-dim);border:1px solid var(--bg-line);border-radius:999px;padding:9px 15px;margin-bottom:24px;transition:color .22s var(--ease),border-color .22s var(--ease),transform .22s var(--ease)}
+  .handle:hover,.handle:focus-visible{color:var(--amber-text);border-color:var(--amber);transform:translateY(-2px)}
+  .handle svg{width:15px;height:15px;fill:currentColor}
+
+  .role{font-family:var(--mono);font-size:clamp(13.5px,2.2vw,17px);color:var(--ink-dim);margin-bottom:26px;font-weight:500}
+  .role .prompt{color:var(--blue)}
+  .role .typed{color:var(--ink)}
+  .role .bit{color:var(--blue);font-style:normal;opacity:.9}
+  #roleSwap{display:inline-block;min-width:10ch}
+
+  .lede{max-width:600px;font-size:clamp(1rem,2.3vw,1.18rem);color:var(--ink-dim);margin-bottom:34px}
+  .lede strong{color:var(--ink);font-weight:600}
+
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-size:13.5px;font-weight:500;padding:13px 22px;border-radius:9px;transition:transform .22s var(--ease),box-shadow .22s var(--ease),background .22s var(--ease),color .22s var(--ease),border-color .22s var(--ease);border:1px solid transparent;display:inline-flex;align-items:center;gap:8px;cursor:pointer;min-height:44px}
+  .btn-primary{background:var(--blue);color:var(--btn-ink);font-weight:700;box-shadow:0 6px 24px -8px rgba(77,163,255,.6)}
+  .btn-primary:hover,.btn-primary:focus-visible{transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(77,163,255,.7)}
+  .btn-ghost{border-color:var(--bg-line);color:var(--ink-dim)}
+  .btn-ghost:hover,.btn-ghost:focus-visible{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
+  .btn:active{transform:translateY(0) scale(.985)}
+  .btn[aria-disabled="true"]{opacity:.5;cursor:not-allowed;pointer-events:none}
+  .hero-meta{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint);margin-top:30px;letter-spacing:.02em}
+  .hero-meta .prompt{color:var(--blue)}
+
+  /* sections */
+  main{display:block}
+  section{padding:clamp(56px,8vw,104px) 0;position:relative;scroll-margin-top:84px}
+  section + section{padding-top:0}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:24px;height:1px;background:var(--blue);display:inline-block}
+  h2{font-family:var(--display);font-weight:600;font-size:clamp(1.563rem,4vw,2.441rem);letter-spacing:-.01em;margin-bottom:22px;line-height:1.12}
+
+  .story p{max-width:var(--maxw-prose);color:var(--ink-dim);margin-bottom:18px;font-size:1.0625rem}
+  .story p strong{color:var(--ink);font-weight:600}
+  .pull{border-left:2px solid var(--amber);padding:6px 0 6px 22px;margin:30px 0;font-family:var(--display);font-size:clamp(1.2rem,3vw,1.5rem);color:var(--ink);font-weight:500;line-height:1.4;max-width:640px}
+
+  /* work cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:18px;margin-top:12px}
+  .card{background:var(--bg-soft);border:1px solid var(--bg-line);border-radius:14px;padding:28px 26px;transition:transform .25s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease);position:relative;overflow:hidden;min-width:0;display:flex;flex-direction:column}
+  .card::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--blue-deep));transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+  .card:hover,.card:focus-within{transform:translateY(-4px);border-color:var(--blue-deep);box-shadow:var(--card-shadow)}
+  .card:hover::before,.card:focus-within::before{transform:scaleX(1)}
+  .card .role-line{font-family:var(--mono);font-size:12px;color:var(--blue);margin-bottom:12px;letter-spacing:.04em}
+  .card h3{font-family:var(--display);font-size:var(--step-1);font-weight:600;margin-bottom:10px}
+  .card p{color:var(--ink-dim);font-size:.95rem;margin-bottom:16px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+  .chip{font-family:var(--mono);font-size:11px;color:var(--ink-dim);border:1px solid var(--bg-line);border-radius:6px;padding:4px 9px}
+  .card-link{font-family:var(--mono);font-size:12.5px;color:var(--blue);margin-top:auto;transition:gap .2s var(--ease)}
+  .card-link.is-soon{color:var(--ink-faint);cursor:default}
+  a.card-link:hover{text-decoration:underline}
+
+  /* focus cards */
+  .focus-card .ico{color:var(--blue);margin-bottom:16px}
+  .focus-card.amber .ico{color:var(--amber-text)}
+  .focus-card .ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .focus-card h3{font-family:var(--display);font-size:var(--step-1);font-weight:600;margin-bottom:8px}
+  .focus-card p{color:var(--ink-dim);font-size:.95rem}
+
+  .skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+  .skill{font-family:var(--mono);font-size:12.5px;color:var(--ink-dim);border:1px solid var(--bg-line);border-radius:7px;padding:8px 13px;min-height:24px;transition:color .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease)}
+  .skill:hover{color:var(--ink);border-color:var(--blue);transform:translateY(-2px)}
+  .hidden{display:none!important}
+  .post-card{cursor:pointer}
+  .post-card .post-cover{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;border:1px solid var(--bg-line);margin-bottom:14px}
+  .post-card .post-date{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);margin-bottom:8px}
+  .reader{position:fixed;inset:0;z-index:60;background:rgba(5,11,20,.85);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);overflow:auto;padding:6vh 20px}
+  .reader-card{background:var(--bg-soft);border:1px solid var(--bg-line);border-radius:16px;max-width:720px;margin:0 auto;padding:clamp(26px,5vw,46px);position:relative}
+  .reader-cover{width:100%;border-radius:12px;border:1px solid var(--bg-line);margin-bottom:22px}
+  .reader-card h2{font-family:var(--display);font-size:clamp(1.4rem,3.5vw,2rem);margin-bottom:18px;line-height:1.15}
+  .reader-card .post-body p{color:var(--ink-dim);font-size:1.05rem;margin-bottom:16px}
+  .reader-close{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:9px;background:var(--bg);border:1px solid var(--bg-line);color:var(--ink-dim);font-size:16px;cursor:pointer}
+  .reader-close:hover{color:var(--blue);border-color:var(--blue)}
+
+  .creds{margin-top:30px;border-top:1px solid var(--bg-line);padding-top:24px;max-width:560px}
+  .creds .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+  .creds ul{list-style:none}
+  .creds li{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--bg-line);font-size:.95rem}
+  .creds li:last-child{border-bottom:0}
+  .creds li b{font-weight:600;color:var(--ink)}
+  .creds li .meta{font-family:var(--mono);font-size:12.5px;color:var(--ink-dim);white-space:nowrap}
+
+  /* timeline */
+  .log{margin-top:10px;position:relative}
+  .log .live{font-family:var(--mono);font-size:12.5px;color:var(--green-text);margin-bottom:14px;display:flex;align-items:center;gap:9px}
+  .log .live .caret{display:inline-block;width:8px;height:1.05em;background:var(--green-dot);animation:blink 1.1s step-end infinite}
+  @keyframes blink{50%{opacity:0}}
+  .log .line{position:absolute;left:var(--rail);top:54px;bottom:0;width:1px;background:var(--bg-line);transform:scaleY(0);transform-origin:top;transition:transform 1.3s var(--ease-in)}
+  .log.in .line{transform:scaleY(1)}
+  .entry{display:grid;grid-template-columns:var(--ts-col) 1fr;gap:28px;padding:24px 0;border-top:1px solid var(--bg-line);position:relative}
+  .entry:last-child{border-bottom:1px solid var(--bg-line)}
+  .entry::before{content:"";position:absolute;left:calc(var(--rail) - 4px);top:32px;width:9px;height:9px;border-radius:50%;background:var(--bg-line);border:2px solid var(--bg);transition:background .3s,box-shadow .3s;z-index:1}
+  .entry:hover::before,.entry.lit::before{background:var(--blue);box-shadow:0 0 0 4px rgba(77,163,255,.18)}
+  .entry .ts{font-family:var(--mono);font-size:13px;color:var(--ink-faint);text-align:right;padding-top:3px;white-space:nowrap}
+  .entry .ts b{display:block;color:var(--blue);font-weight:700;font-size:13.5px}
+  .entry .body .tag{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px;display:block;color:var(--blue)}
+  .entry .body .tag.amber{color:var(--amber-text)}
+  .entry .body .tag.green{color:var(--green-text)}
+  .entry .body h3{font-family:var(--display);font-size:var(--step-1);font-weight:600;margin-bottom:6px}
+  .entry .body p{color:var(--ink-dim);font-size:.97rem;max-width:560px}
+
+  /* contact */
+  #contact .wrap{max-width:880px}
+  .contact-card{background:linear-gradient(160deg,var(--bg-soft),color-mix(in srgb,var(--bg-soft) 70%,var(--bg)));border:1px solid var(--bg-line);border-radius:18px;padding:clamp(38px,6vw,56px) clamp(22px,5vw,48px);text-align:center;position:relative;overflow:hidden}
+  .contact-card::before{content:"";position:absolute;top:-60%;left:50%;transform:translateX(-50%);width:520px;height:320px;max-width:90%;background:radial-gradient(circle,rgba(77,163,255,.12),transparent 65%);filter:blur(30px);pointer-events:none}
+  .contact-card>*{position:relative}
+  .contact-card .eyebrow{justify-content:center}
+  .contact-card h2{margin-bottom:14px}
+  .contact-card p{color:var(--ink-dim);max-width:480px;margin:0 auto 28px}
+  .links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  footer{border-top:1px solid var(--bg-line);padding:30px 0;margin-top:20px}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  footer .meta{font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
+  footer .meta span{color:var(--blue)}
+
+  /* reveal — only hides when JS is present, so no-JS shows everything */
+  .js .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease-in),transform .6s var(--ease-in)}
+  .js .reveal.in{opacity:1;transform:none}
+  .js .hero-el{opacity:0;transform:translateY(12px)}
+  .js .fonts-ready .hero-el{animation:rise .7s var(--ease-in) forwards;animation-delay:var(--d,0s)}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* responsive */
+  @media(max-width:720px){
+    .navlinks{position:fixed;top:0;right:0;height:100vh;width:min(80vw,300px);background:var(--bg-soft);border-left:1px solid var(--bg-line);flex-direction:column;justify-content:flex-start;gap:6px;padding:88px 26px 26px;font-size:15px;opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .26s var(--ease),transform .26s var(--ease),visibility .26s var(--ease);z-index:39}
+    .navlinks a{padding:12px 0;width:100%;border-bottom:1px solid var(--bg-line)}
+    body.nav-open .navlinks{opacity:1;visibility:visible;transform:none}
+    .nav-toggle{display:block;z-index:41}
+    header{padding:clamp(56px,9vh,88px) 0 clamp(64px,9vh,96px)}
+    .radar{opacity:.3;right:auto;left:50%;transform:translate(-50%,-50%);width:min(380px,92vw)}
+    .entry{grid-template-columns:1fr;gap:8px}
+    .entry .ts{text-align:left;padding-top:0;display:flex;gap:8px;flex-wrap:wrap;white-space:normal}
+    .entry::before{display:none}
+    .log .line{display:none}
+    .creds li{flex-direction:column;gap:4px}
+    .creds li .meta{white-space:normal}
+  }
+  @media(max-width:480px){
+    .wrap{padding:0 18px}
+    .cta-row .btn,.links .btn{flex:1 1 auto;justify-content:center}
+    .status{border-radius:14px}
+  }
+  @media(hover:none){
+    .card:hover,.handle:hover,.btn:hover,.skill:hover{transform:none}
+  }
+
+  /* reduced motion: cancel large/looping/translate motion, keep quick feedback */
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .radar .sweep{animation:none;transform:rotate(315deg)}
+    .radar .blip{animation:none;opacity:.9}
+    .dot::after,.log .live .caret{animation:none;opacity:1}
+    .js .reveal{opacity:1;transform:none;transition:none}
+    .js .hero-el{opacity:1;transform:none;animation:none}
+    .log .line{transition:none;transform:scaleY(1)}
+    .btn:hover,.btn-primary:hover,.btn-ghost:hover,.card:hover,.handle:hover,.skill:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main" data-vi="Bỏ qua tới nội dung">Skip to content</a>
+
+<nav class="bar" aria-label="Primary">
+  <div class="wrap">
+    <div class="nav-left">
+      <a href="#main" class="brand" aria-label="dhf.io.vn — home">dhf<span>.io.vn</span></a>
+      <a href="/photobook-ulaw" class="pbk-btn" title="Photobook ULAW — lấy số chụp ảnh"><span aria-hidden="true">📸</span><span class="pbk-lbl">Photobook ULAW</span></a>
+    </div>
+    <div class="nav-right">
+      <div id="navMenu" class="navlinks">
+        <a href="#story" data-vi="Câu chuyện">Story</a>
+        <a href="#work" data-vi="Dự án">Work</a>
+        <a href="#journey" data-vi="Nhật ký">Journey</a>
+        <a href="#focus" data-vi="Lĩnh vực">Focus</a>
+        <a href="#writing" id="navWriting" data-vi="Bài viết" style="display:none">Writing</a>
+        <a href="#contact" data-vi="Liên hệ">Contact</a>
+      </div>
+      <a class="iconbtn ig-btn" href="https://instagram.com/fu.dahong" target="_blank" rel="noopener" aria-label="Instagram — @fu.dahong">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <button id="langBtn" class="iconbtn lang-btn" type="button" aria-label="Switch to Vietnamese">VI</button>
+      <button id="navToggle" class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu"><span class="bars" aria-hidden="true"></span></button>
+    </div>
+  </div>
+</nav>
+
+<div id="navScrim" class="nav-scrim" hidden></div>
+
+<main id="main">
+
+<header>
+  <div class="radar" aria-hidden="true">
+    <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div><div class="ring r5"></div>
+    <div class="ticks"></div>
+    <div class="cross"></div>
+    <div class="sweep"></div>
+    <div class="core"></div>
+    <div class="blip b1"></div>
+    <div class="blip b2"></div>
+  </div>
+  <div class="wrap">
+    <div class="status hero-el" style="--d:.05s"><span class="dot"></span> <span data-cms="hero_status" data-vi="Người phòng thủ đang rèn luyện — quan sát, học hỏi, xây dựng">Defender in training — monitoring, learning, building</span></div>
+    <h1 class="hero-el" style="--d:.16s" data-cms="hero_name">Dai Hong<br><span class="name-accent">Phuc</span></h1>
+    <a class="handle hero-el" style="--d:.26s" href="https://instagram.com/fu.dahong" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.6 2.2 15.2 2.2 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.62c-3.15 0-3.5 0-4.74.07-1.14.05-1.76.24-2.17.4-.55.22-.94.47-1.35.88-.41.41-.66.8-.88 1.35-.16.41-.35 1.03-.4 2.17-.06 1.24-.07 1.6-.07 4.74s0 3.5.07 4.74c.05 1.14.24 1.76.4 2.17.22.55.47.94.88 1.35.41.41.8.66 1.35.88.41.16 1.03.35 2.17.4 1.24.06 1.6.07 4.74.07s3.5 0 4.74-.07c1.14-.05 1.76-.24 2.17-.4.55-.22.94-.47 1.35-.88.41-.41.66-.8.88-1.35.16-.41.35-1.03.4-2.17.06-1.24.07-1.6.07-4.74s0-3.5-.07-4.74c-.05-1.14-.24-1.76-.4-2.17a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.17-.4-1.24-.06-1.6-.07-4.74-.07zm0 2.76a5.42 5.42 0 1 1 0 10.84 5.42 5.42 0 0 1 0-10.84zm0 8.94a3.52 3.52 0 1 0 0-7.04 3.52 3.52 0 0 0 0 7.04zm6.9-9.15a1.27 1.27 0 1 1-2.53 0 1.27 1.27 0 0 1 2.53 0z"/></svg>
+      @fu.dahong
+    </a>
+    <p class="role hero-el" style="--d:.36s"><span class="prompt" aria-hidden="true">&gt;</span> <span class="typed" aria-hidden="true"><span id="rolePre"></span><span id="roleSwap"></span><span id="roleSuf"></span></span><span class="sr-only" data-cms="role_sr" data-vi="Sinh viên Khoa học Máy tính và An ninh mạng, định hướng blue team / an ninh phòng thủ.">Computer Science and Cyber Security student, focused on blue team / defensive security.</span></p>
+    <p class="lede hero-el" style="--d:.46s" data-cms="lede" data-vi="Tôi xây dựng sản phẩm trên web, và đang học cách bảo vệ chúng. Một sinh viên năm nhất ngành khoa học máy tính tại Thành phố Hồ Chí Minh, bắt đầu <strong>làm việc thật sự</strong> từ sớm — và đang hướng tới an ninh phòng thủ một cách <strong>có chủ đích</strong>.">I build things on the web, and I'm learning to defend them. A first-year computer science student in Ho Chi Minh City who started doing <strong>real work</strong> early — and is heading, <strong>deliberately</strong>, toward defensive security.</p>
+    <div class="cta-row hero-el" style="--d:.56s">
+      <a href="#journey" class="btn btn-primary" data-vi="Đọc hành trình →">Read the journey →</a>
+      <a href="#contact" class="btn btn-ghost" data-vi="Liên hệ với tôi">Get in touch</a>
+    </div>
+    <div class="hero-meta hero-el" style="--d:.66s" aria-hidden="true"><span class="prompt">//</span> <span data-cms="hero_meta" data-vi="trạng thái: đang giám sát · TP. Hồ Chí Minh · UTC+7">status: monitoring · Ho Chi Minh City · UTC+7</span></div>
+  </div>
+</header>
+
+<section id="story" class="story" aria-labelledby="story-h">
+  <div class="wrap">
+    <div class="eyebrow reveal" data-cms="story_eyebrow" data-vi="Tôi là ai">Who I am</div>
+    <h2 id="story-h" class="reveal" data-cms="story_h2" data-vi="Từ chữa lành con người<br>đến bảo vệ hệ thống">From healing bodies<br>to defending systems</h2>
+    <p class="reveal" data-cms="story_p1" data-vi="Từ nhỏ, tôi mơ làm bác sĩ — với tôi, y học là cách trực tiếp nhất để giúp người. Điều ít ai biết là tôi cũng <strong>mê máy tính</strong>: tôi tự học Python, rồi C++, viết những công cụ nhỏ để tự động hoá mấy tựa game mình chơi, và thức khuya đọc những góc khuất của internet nơi dân an ninh mạng tụ họp — không phải để phá, mà vì cách họ tư duy khiến tôi say mê. Nhưng tôi giấu phần đó đi, và chọn đặt niềm tin vào y khoa.">Growing up, I wanted to be a doctor — medicine felt like the most direct way to help people. What few people knew was that I also <strong>loved computers</strong>: I taught myself Python, then C++, wrote small tools to automate the games I played, and spent late nights reading the corners of the internet where security people gathered — not to break things, but because the way they thought fascinated me. I kept that side quiet, and chose to believe in medicine.</p>
+    <p class="reveal" data-cms="story_p2" data-vi="Mọi thứ đổi thay vào <strong>ngày 6 tháng 6 năm 2023</strong>, trong một bữa cơm gia đình, khi tôi gặp anh P. — người sáng lập E—, một trong những đội an ninh mạng mạnh nhất Việt Nam, với tên tuổi vươn tầm thế giới. Chỉ vài tháng trước đó, đội của anh đã so tài cùng những tên tuổi hàng đầu thế giới và được báo chí trong nước đưa tin. Cách anh nói về việc bảo vệ hệ thống, dữ liệu và niềm tin đã thay đổi mọi thứ trong tôi: hoá ra an ninh mạng cũng là một cách <strong>bảo vệ con người</strong> — trong một thế giới mỗi ngày một trực tuyến hơn. Lần đầu tiên, thứ tôi từng xem là sở thích tuổi mới lớn hiện ra như một nghề nghiệp thật sự và đáng trân trọng.">That changed on <strong>6 June 2023</strong>, over a family dinner, when I met P. — the founder of E—, one of Vietnam's most formidable security teams, with a name that carries weight on the world stage. Only months earlier, his team had gone up against the world's best and made national headlines. The way he spoke about defending systems, data, and trust reframed everything for me: cybersecurity, I realised, is its own way of <strong>protecting people</strong> — in a world that lives more online every day. For the first time, what I'd treated as a teenage hobby looked like a serious, respected craft.</p>
+    <p class="reveal" data-cms="story_p3" data-vi="Dần dần, tôi thừa nhận y học không phải nơi tôi mạnh nhất — nhưng bản năng phía sau nó thì chưa bao giờ rời đi. Một <strong>blue team</strong> làm cho hệ thống điều mà bác sĩ làm cho con người: giám sát, phát hiện, ứng phó, bảo vệ. Một công việc thầm lặng, kiên nhẫn và mang tính phòng thủ. Đó là phần của an ninh mạng mà tôi bị cuốn vào.">In time, I admitted that medicine wasn't where I was strongest — but the instinct behind it never left. A <strong>blue team</strong> does for systems what a doctor does for people: monitor, detect, respond, protect. Quiet, patient, defensive work. That's the part of security I'm drawn to.</p>
+    <blockquote class="pull reveal" data-cms="story_pull" data-vi="Tôi không muốn phá vỡ mọi thứ để tỏ ra thông minh. Tôi muốn là người giữ cho chúng đứng vững.">I don't want to break things to look clever. I want to be the one who keeps them standing.</blockquote>
+    <p class="reveal" data-cms="story_p4" data-vi="Hôm nay tôi là sinh viên năm nhất ngành khoa học máy tính, từng bước xây nền tảng về lập trình và tư duy hệ thống, với một định hướng rõ ràng cho mảng phòng thủ — <strong>blue team và SOC</strong>. Tôi biết mình vẫn ở chặng đầu, nhưng tôi mang theo đúng sự tận tâm và tò mò ngày xưa từng dành cho y học: khát khao hiểu thật sâu, giải quyết thật kỹ, và tạo ra khác biệt thật sự.">Today I'm a first-year computer science student, building a foundation in programming and systems thinking with a deliberate focus on the defensive side — <strong>blue team and SOC</strong>. I'm still early in the journey, but I carry the same care and curiosity I once had for medicine: a desire to understand deeply, solve carefully, and make a real difference.</p>
+  </div>
+</section>
+
+<section id="work" aria-labelledby="work-h">
+  <div class="wrap">
+    <div class="eyebrow reveal" data-vi="Dự án tiêu biểu">Selected work</div>
+    <h2 id="work-h" class="reveal" data-vi="Những gì tôi đã làm">Things I've shipped</h2>
+    <div class="grid">
+      <article class="card reveal">
+        <div class="role-line" data-vi="Lập trình web tự do">Freelance web developer</div>
+        <h3>Lisa Nail &amp; Spa</h3>
+        <p data-vi="Xây dựng và duy trì website cho một chuỗi spa nhiều chi nhánh, giữ cho thông tin đặt lịch và chi nhánh luôn cập nhật.">Built and maintain the public site for a multi-branch salon, keeping booking and branch information current.</p>
+        <div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span></div>
+        <span class="card-link is-soon" data-vi="Website khách hàng đang vận hành">Live client site</span>
+      </article>
+      <article class="card reveal">
+        <div class="role-line" data-vi="Người sáng lập &amp; biên tập">Founder &amp; editor</div>
+        <h3>HONQ</h3>
+        <p data-vi="Một câu lạc bộ báo chí và nhiếp ảnh học sinh do tôi sáng lập, xây dựng quanh những câu chuyện con người có thật, và vận hành cùng một nhóm cộng tác viên nhỏ.">A student journalism and photography club I founded, built on real human stories, and ran with a small team of contributors.</p>
+        <div class="chips"><span class="chip" data-vi="Báo chí">Journalism</span><span class="chip" data-vi="Nhiếp ảnh">Photography</span><span class="chip" data-vi="Đội nhóm">Team</span></div>
+        <a class="card-link" href="https://honq.io.vn/" target="_blank" rel="noopener" data-vi="Xem website →">Visit the site →</a>
+      </article>
+      <article class="card reveal">
+        <div class="role-line" data-vi="Dự án cá nhân (đang thực hiện)">Personal project (in progress)</div>
+        <h3 data-vi="Phòng lab SOC tại nhà">Home SOC lab</h3>
+        <p data-vi="Một phòng lab nhỏ tại nhà để thực hành giám sát, phân tích log và ứng phó sự cố một cách trực tiếp.">A small home lab to practise monitoring, log analysis, and incident response hands-on.</p>
+        <div class="chips"><span class="chip">Linux</span><span class="chip" data-vi="Mạng">Networking</span><span class="chip" data-vi="Log &amp; phát hiện">Logging &amp; detection</span></div>
+        <span class="card-link is-soon" data-vi="Bài viết đang thực hiện">Write-up in progress</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="journey" aria-labelledby="journey-h">
+  <div class="wrap">
+    <div class="eyebrow reveal" data-vi="Nhật ký">The log</div>
+    <h2 id="journey-h" class="reveal" data-vi="Hành trình, theo từng dòng">Journey, in entries</h2>
+    <div class="log reveal">
+      <div class="live" aria-hidden="true"><span class="caret"></span> monitoring…</div>
+      <div class="line" aria-hidden="true"></div>
+      <article class="entry">
+        <div class="ts"><b data-vi="từ thuở bé">growing up</b></div>
+        <div class="body">
+          <span class="tag amber" data-vi="// khởi nguồn">// origin</span>
+          <h3 data-vi="Cậu bé mơ làm bác sĩ">A kid who wanted to be a doctor</h3>
+          <p data-vi="Đặt niềm tin vào y học như cách để giúp người — nhưng vẫn lặng lẽ tự mày mò học lập trình mỗi tối.">Set on medicine as a way to help people — while quietly teaching myself to code on the side.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <div class="ts">2023<b data-vi="lớp 10">grade 10</b></div>
+        <div class="body">
+          <span class="tag" data-vi="// xây dựng">// built</span>
+          <h3 data-vi="Đồng sáng lập câu lạc bộ tin học của trường">Co-founded my school's computer club</h3>
+          <p data-vi="Lần đầu tôi xây dựng — và góp phần dẫn dắt — một thứ về công nghệ cùng với người khác.">My first taste of building something technical with other people — and helping lead it.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <div class="ts">06.06.2023<b data-vi="bước ngoặt">the turn</b></div>
+        <div class="body">
+          <span class="tag amber" data-vi="// bước ngoặt">// turning point</span>
+          <h3 data-vi="Bữa cơm đổi hướng đời tôi">The dinner that changed my direction</h3>
+          <p data-vi="Một bữa cơm gia đình, một cuộc trò chuyện với anh P., và cánh cửa bất ngờ dẫn tôi đến an ninh mạng.">A family dinner, a conversation with P., and an unexpected door into cybersecurity.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <div class="ts">2024<b data-vi="lớp 11">grade 11</b></div>
+        <div class="body">
+          <span class="tag" data-vi="// dẫn dắt">// led</span>
+          <h3 data-vi="Trưởng câu lạc bộ nhiếp ảnh của trường">Led my school's photography club</h3>
+          <p data-vi="Được bầu làm trưởng nhóm — nơi tôi học cách thật sự nhìn vào con người và câu chuyện của họ.">Elected to lead it — where I learned to really look at people and their stories.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <div class="ts">2025<b data-vi="lớp 12">grade 12</b></div>
+        <div class="body">
+          <span class="tag amber" data-vi="// sáng lập">// founded</span>
+          <h3 data-vi="Sáng lập HONQ">Founded HONQ</h3>
+          <p data-vi="Một dự án theo phong cách Humans of New York: những câu chuyện thật từ học sinh, thầy cô, nhân viên và cả hàng xóm — để một cộng đồng xích lại gần nhau hơn.">A Humans of New York–style project: real stories from students, teachers, staff, and neighbours — gathered to bring a community a little closer.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <div class="ts">2025 ·<b data-vi="năm nhất">year one</b></div>
+        <div class="body">
+          <span class="tag" data-vi="// nhập học">// enrolled</span>
+          <h3 data-vi="Bắt đầu chương trình Khoa học Máy tính">Started my computer science degree</h3>
+          <p data-vi="Bắt đầu chương trình KHMT tại Thành phố Hồ Chí Minh với định hướng đặt ra từ sớm: an ninh phòng thủ — blue team và SOC.">Began a CS degree in Ho Chi Minh City with the direction set early: defensive security — blue team and SOC.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <div class="ts">2026 ·<b data-vi="hiện tại">now</b></div>
+        <div class="body">
+          <span class="tag green" data-vi="// đang học">// studying</span>
+          <h3 data-vi="Nền tảng mạng → CCNP">Networking foundations → CCNP</h3>
+          <p data-vi="Đã hoàn thành CCNA và hiện đang học CCNP — nền tảng mạng mà mọi vai trò blue team đều dựa trên.">Finished CCNA and now working through CCNP, the networking groundwork every blue team role is built on.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <div class="ts">next →<b data-vi="mục tiêu">goal</b></div>
+        <div class="body">
+          <span class="tag" data-vi="// kế tiếp">// next</span>
+          <h3 data-vi="Mục tiêu: Certified Network Defender (CND)">Targeting: Certified Network Defender (CND)</h3>
+          <p data-vi="Bước tiếp theo tôi nhắm tới — chứng chỉ phòng thủ mạng tập trung vào giám sát, phát hiện và ứng phó: đúng trọng tâm blue team.">The next step I'm aiming for — a network-defense certification focused on monitoring, detection, and response: squarely blue team.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="focus" aria-labelledby="focus-h">
+  <div class="wrap">
+    <div class="eyebrow reveal" data-vi="Tôi làm gì">What I work on</div>
+    <h2 id="focus-h" class="reveal" data-vi="Hai bàn tay, một tư duy">Two hands, one mindset</h2>
+    <div class="grid">
+      <article class="card focus-card reveal">
+        <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="5 8 9 12 5 16"/><line x1="12" y1="17" x2="18" y2="17"/></svg></div>
+        <h3 data-vi="Phát triển web">Web development</h3>
+        <p data-vi="Công việc freelance front-end và full-stack — biến yêu cầu thành những website gọn gàng, dễ bảo trì cho khách hàng thật.">Front-end and full-stack freelance work — turning briefs into clean, maintainable sites for real clients.</p>
+      </article>
+      <article class="card focus-card reveal">
+        <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 8.5-4-1-7-4-7-8.5V6z"/><polyline points="8.5 12 11 14.5 15.5 9.5"/></svg></div>
+        <h3 data-vi="Blue team &amp; SOC">Blue team &amp; SOC</h3>
+        <p data-vi="Nơi tôi đang hướng tới: giám sát, phát hiện và ứng phó sự cố. Mạng trước, vận hành an ninh tiếp theo.">Where I'm headed: monitoring, detection, and incident response. Networking now, security operations next.</p>
+      </article>
+      <article class="card focus-card amber reveal">
+        <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4l3 5.2M20 12h-6M16.9 17.6l-3-5.2M7.1 17.6l3-5.2M4 12h6M7.1 6.4l3 5.2"/></svg></div>
+        <h3 data-vi="Câu chuyện &amp; nhiếp ảnh">Stories &amp; photography</h3>
+        <p data-vi="Từ HONQ trở đi, tôi chụp con người và khoảnh khắc — cùng sự tỉ mỉ mà tôi mang vào công việc.">From HONQ on, I photograph people and moments — the same attention to detail I bring to the work.</p>
+      </article>
+    </div>
+    <div class="skills reveal">
+      <span class="skill" data-vi="Mạng">Networking</span>
+      <span class="skill" data-vi="Blue team &amp; SOC">Blue team &amp; SOC</span>
+      <span class="skill">Linux</span>
+      <span class="skill" data-vi="Phân tích log &amp; phát hiện">Log analysis &amp; detection</span>
+      <span class="skill">HTML · CSS · JavaScript</span>
+      <span class="skill" data-vi="Phát triển web">Web development</span>
+      <span class="skill" data-vi="Nhiếp ảnh">Photography</span>
+      <span class="skill" data-vi="Tiếng Anh">English</span>
+      <span class="skill" data-vi="Tiếng Việt — bản ngữ">Vietnamese — native</span>
+    </div>
+    <div class="creds reveal">
+      <div class="lbl" data-vi="Chứng chỉ">Credentials</div>
+      <ul>
+        <li><b>Cisco CCNA</b><span class="meta" data-vi="Đã đạt · 2025">Certified · 2025</span></li>
+        <li><b>Cisco CCNP</b><span class="meta" data-vi="Đang học · 2026">In progress · 2026</span></li>
+        <li><b>EC-Council CND</b><span class="meta" data-vi="Mục tiêu kế tiếp">Targeting · next</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="writing" class="hidden" aria-labelledby="writing-h">
+  <div class="wrap">
+    <div class="eyebrow reveal" data-vi="Bài viết &amp; write-up">Writing</div>
+    <h2 id="writing-h" class="reveal" data-vi="Ghi chép &amp; write-up">Notes &amp; write-ups</h2>
+    <div class="grid" id="writing-list"></div>
+  </div>
+</section>
+
+<section id="contact" aria-labelledby="contact-h">
+  <div class="wrap">
+    <div class="contact-card reveal">
+      <div class="eyebrow" data-cms="contact_eyebrow" data-vi="Sẵn sàng trò chuyện">Open to talk</div>
+      <h2 id="contact-h" data-cms="contact_h2" data-vi="Kết nối nhé">Let's connect</h2>
+      <p data-cms="contact_body" data-vi="Nếu bạn có một dự án, một câu hỏi, hay chỉ muốn trò chuyện về an ninh mạng và nơi nó đang hướng tới, tôi rất dễ liên hệ. Email là tốt nhất.">If you have a project, a question, or just want to talk about security and where it's going, I'm easy to reach. Email is best.</p>
+      <div class="links">
+        <button id="emailBtn" class="btn btn-primary" type="button" data-email="daihongphucecq@gmail.com" data-vi="Gửi email" data-copied="Đã sao chép ✓" data-copied-en="Copied ✓">Email me</button>
+        <a href="https://instagram.com/fu.dahong" target="_blank" rel="noopener" class="btn btn-ghost">Instagram</a>
+      </div>
+      <span id="copyStatus" class="sr-only" role="status" aria-live="polite"></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="meta">© 2026 Dai Hong Phuc · <span>dhf.io.vn</span></div>
+    <div class="meta" data-cms="footer" data-vi="Tự code. Tự vận hành. Luôn học hỏi.">Hand-coded. Self-hosted. Always learning.</div>
+  </div>
+</footer>
+
+<!-- JSON-LD Person (privacy-safe) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Dai Hong Phuc",
+  "alternateName": "fu.dahong",
+  "url": "https://dhf.io.vn/",
+  "image": "https://dhf.io.vn/og-image.png",
+  "jobTitle": "Computer Science student",
+  "description": "First-year computer science student in Ho Chi Minh City focused on blue team / defensive cybersecurity. Founder of HONQ, freelance web developer.",
+  "email": "mailto:daihongphucecq@gmail.com",
+  "knowsAbout": ["Blue team / defensive cybersecurity","Security operations (SOC)","Monitoring, detection and incident response","Network defense (CND)","Computer networking (CCNA, CCNP)","Web development","Photography"],
+  "knowsLanguage": [{"@type":"Language","name":"Vietnamese"},{"@type":"Language","name":"English"}],
+  "sameAs": ["https://instagram.com/fu.dahong"]
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var root=document.documentElement;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)');
+
+  // fonts-ready gate for hero entrance
+  function ready(){document.body.classList.add('fonts-ready');}
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(ready);setTimeout(ready,400);}else{ready();}
+
+  // ---- language (EN default, VI toggle) ----
+  var LANG=(root.getAttribute('lang')==='vi')?'vi':'en';
+  var langBtn=document.getElementById('langBtn');
+  var nodes=document.querySelectorAll('[data-vi]:not(.typed)');
+  function applyLang(lang){
+    LANG=lang;root.setAttribute('lang',lang);
+    nodes.forEach(function(el){
+      if(el.dataset.en===undefined)el.dataset.en=el.innerHTML;
+      el.innerHTML=(lang==='vi')?el.dataset.vi:el.dataset.en;
+    });
+    langBtn.textContent=(lang==='vi')?'EN':'VI';
+    langBtn.setAttribute('aria-label',(lang==='vi')?'Chuyển sang tiếng Anh':'Switch to Vietnamese');
+    startRole();
+    try{localStorage.setItem('lang',lang);}catch(e){}
+  }
+  // ---- role line: binary (0/1) scramble swapping Computer Science <-> Cyber Security ----
+  var ROLE={
+    en:{pre:'',swap:['Computer Science','Cyber Security'],suf:' student · blue team / defensive security'},
+    vi:{pre:'Sinh viên ',swap:['Khoa học Máy tính','An ninh mạng'],suf:' · blue team / an ninh phòng thủ'}
+  };
+  var rolePre=document.getElementById('rolePre'),roleSwap=document.getElementById('roleSwap'),roleSuf=document.getElementById('roleSuf');
+  var swapIdx=0,swapTimer,scrambleTimer;
+  function escc(c){return c==='<'?'&lt;':c==='>'?'&gt;':c==='&'?'&amp;':c;}
+  function scramble(el,target,cb){
+    var bits='01',from=el.textContent,len=Math.max(from.length,target.length),q=[],i;
+    for(i=0;i<len;i++){var s=Math.floor(Math.random()*8);q.push({f:from.charAt(i),t:target.charAt(i),s:s,e:s+8+Math.floor(Math.random()*8),c:''});}
+    var frame=0;
+    (function tick(){
+      var out='',done=0;
+      for(i=0;i<q.length;i++){var o=q[i];
+        if(frame>=o.e){done++;out+=escc(o.t);}
+        else if(frame>=o.s){if(!o.c||Math.random()<0.3)o.c=bits.charAt(Math.floor(Math.random()*2));out+='<i class="bit">'+o.c+'</i>';}
+        else out+=escc(o.f);
+      }
+      el.innerHTML=out;
+      if(done===q.length){if(cb)cb();}
+      else{frame++;scrambleTimer=setTimeout(tick,42);}
+    })();
+  }
+  function startRole(){
+    if(!roleSwap)return;
+    clearTimeout(swapTimer);clearTimeout(scrambleTimer);
+    var r=ROLE[LANG]||ROLE.en;
+    rolePre.textContent=r.pre;roleSuf.textContent=r.suf;roleSwap.textContent=r.swap[0];swapIdx=0;
+    if(reduce.matches)return;
+    (function cycle(){
+      swapTimer=setTimeout(function(){
+        swapIdx=(swapIdx+1)%r.swap.length;
+        scramble(roleSwap,r.swap[swapIdx],cycle);
+      },2400);
+    })();
+  }
+  applyLang(LANG);
+  (window.__hydrated||Promise.resolve()).then(function(){
+    nodes=document.querySelectorAll('[data-vi]:not(.typed)');
+    if(window.__ROLE_OVERRIDE){ROLE.en=window.__ROLE_OVERRIDE.en;ROLE.vi=window.__ROLE_OVERRIDE.vi;}
+    applyLang(LANG);
+  });
+  langBtn.addEventListener('click',function(){applyLang(LANG==='vi'?'en':'vi');});
+
+  // ---- mobile nav drawer ----
+  var body=document.body,toggle=document.getElementById('navToggle'),menu=document.getElementById('navMenu'),scrim=document.getElementById('navScrim'),igBtn=document.querySelector('.ig-btn');
+  var focusables,lastFocus,scrimT;
+  function openNav(){
+    clearTimeout(scrimT);
+    body.classList.add('nav-open');scrim.hidden=false;requestAnimationFrame(function(){scrim.style.opacity='1';});
+    toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label',LANG==='vi'?'Đóng menu':'Close menu');
+    body.style.overflow='hidden';lastFocus=document.activeElement;
+    focusables=[toggle,igBtn,langBtn].concat([].slice.call(menu.querySelectorAll('a')));
+    var firstLink=menu.querySelector('a');firstLink&&firstLink.focus();
+  }
+  function closeNav(ret){
+    body.classList.remove('nav-open');scrim.style.opacity='0';
+    toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label',LANG==='vi'?'Mở menu':'Open menu');
+    body.style.overflow='';scrimT=setTimeout(function(){scrim.hidden=true;},260);
+    if(ret&&lastFocus)lastFocus.focus();
+  }
+  toggle.addEventListener('click',function(){body.classList.contains('nav-open')?closeNav(true):openNav();});
+  scrim.addEventListener('click',function(){closeNav(true);});
+  menu.addEventListener('click',function(e){if(e.target.tagName==='A')closeNav(false);});
+  document.addEventListener('keydown',function(e){
+    if(!body.classList.contains('nav-open'))return;
+    if(e.key==='Escape')closeNav(true);
+    if(e.key==='Tab'&&focusables){
+      var first=focusables[0],last=focusables[focusables.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  });
+
+  // ---- scroll reveal ----
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  }else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+
+  // ---- timeline node light-up ----
+  if('IntersectionObserver' in window&&!reduce.matches){
+    var lo=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('lit');lo.unobserve(e.target);}});},{threshold:.6});
+    document.querySelectorAll('.entry').forEach(function(el){lo.observe(el);});
+  }
+
+  // ---- sticky nav state + scrollspy ----
+  var bar=document.querySelector('nav.bar');
+  var sections=[].slice.call(document.querySelectorAll('main section[id]'));
+  var links={};document.querySelectorAll('.navlinks a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a;});
+  function onScroll(){bar.classList.toggle('scrolled',window.scrollY>20);}
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){var id=e.target.id;for(var k in links)links[k].classList.toggle('active',k===id);}
+    });},{rootMargin:'-45% 0px -50% 0px'});
+    sections.forEach(function(s){so.observe(s);});
+  }
+
+  // ---- copy email ----
+  var emailBtn=document.getElementById('emailBtn');
+  emailBtn.addEventListener('click',function(){
+    var addr=emailBtn.dataset.email;
+    var done=function(){
+      emailBtn.textContent=(LANG==='vi')?(emailBtn.dataset.copied||'Đã sao chép ✓'):(emailBtn.dataset.copiedEn||'Copied ✓');
+      var cs=document.getElementById('copyStatus');if(cs)cs.textContent=(LANG==='vi')?'Đã sao chép địa chỉ email':'Email address copied';
+      clearTimeout(emailBtn._t);
+      emailBtn._t=setTimeout(function(){emailBtn.textContent=(LANG==='vi')?emailBtn.dataset.vi:emailBtn.dataset.en;},1300);
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(addr).then(done,function(){location.href='mailto:'+addr;});}
+    else{location.href='mailto:'+addr;}
+  });
+
+  // ---- pause radar when tab hidden ----
+  document.addEventListener('visibilitychange',function(){
+    var st=document.hidden?'paused':'running';
+    document.querySelectorAll('.radar .sweep,.radar .blip').forEach(function(el){el.style.animationPlayState=st;});
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /photobook-ulaw/
+Sitemap: https://dhf.io.vn/sitemap.xml
