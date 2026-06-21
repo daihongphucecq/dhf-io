@@ -1,0 +1,6 @@
+# Responsible disclosure for dhf.io.vn
+# If you find a security issue on this site, I'd genuinely like to hear about it.
+Contact: mailto:daihongphucecq@gmail.com
+Expires: 2027-06-22T00:00:00.000Z
+Preferred-Languages: en, vi
+Canonical: https://dhf.io.vn/.well-known/security.txt

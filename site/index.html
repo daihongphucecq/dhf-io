@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0a1422">
 <title>Dai Hong Phuc — Computer Science student &amp; aspiring blue team engineer</title>
@@ -102,7 +102,7 @@
   .brand span{color:var(--blue)}
   .nav-right{display:flex;align-items:center;gap:6px}
   .nav-left{display:flex;align-items:center;gap:13px;min-width:0}
-  .pbk-btn{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--amber);border:1px solid rgba(240,179,87,.42);border-radius:999px;padding:5px 12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:border-color .2s,background .2s,transform .2s}
+  .pbk-btn{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--amber);border:1px solid rgba(240,179,87,.42);border-radius:999px;padding:5px 12px;min-height:44px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:border-color .2s,background .2s,transform .2s}
   .pbk-btn:hover{border-color:var(--amber);background:rgba(240,179,87,.09);transform:translateY(-1px)}
   @media(max-width:560px){ .nav-left{gap:9px} .pbk-btn{font-size:11px;padding:5px 10px} .pbk-lbl{display:none} .pbk-btn::after{content:"Photobook"} }
   .navlinks{display:flex;gap:26px;font-family:var(--mono);font-size:13px;color:var(--ink-dim)}
@@ -239,7 +239,7 @@
   .reader-cover{width:100%;border-radius:12px;border:1px solid var(--bg-line);margin-bottom:22px}
   .reader-card h2{font-family:var(--display);font-size:clamp(1.4rem,3.5vw,2rem);margin-bottom:18px;line-height:1.15}
   .reader-card .post-body p{color:var(--ink-dim);font-size:1.05rem;margin-bottom:16px}
-  .reader-close{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:9px;background:var(--bg);border:1px solid var(--bg-line);color:var(--ink-dim);font-size:16px;cursor:pointer}
+  .reader-close{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:9px;background:var(--bg);border:1px solid var(--bg-line);color:var(--ink-dim);font-size:16px;cursor:pointer}
   .reader-close:hover{color:var(--blue);border-color:var(--blue)}
 
   .creds{margin-top:30px;border-top:1px solid var(--bg-line);padding-top:24px;max-width:560px}
@@ -484,7 +484,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.21 15.6 2.2 15.2 2.2 12s0-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.62c-3.15 0-3.5 0-4.74.07-1.14.05-1.76.24-2.17.4-.55.22-.94.47-1.35.88-.41.41-.66.8-.88 1.35-.16.41-.35 1.03-.4 2.17-.06 1.24-.07 1.6-.07 4.74s0 3.5.07 4.74c.05 1.14.24 1.76.4 2.17.22.55.47.94.88 1.35.41.41.8.66 1.35.88.41.16 1.03.35 2.17.4 1.24.06 1.6.07 4.74.07s3.5 0 4.74-.07c1.14-.05 1.76-.24 2.17-.4.55-.22.94-.47 1.35-.88.41-.41.66-.8.88-1.35.16-.41.35-1.03.4-2.17.06-1.24.07-1.6.07-4.74s0-3.5-.07-4.74c-.05-1.14-.24-1.76-.4-2.17a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.17-.4-1.24-.06-1.6-.07-4.74-.07zm0 2.76a5.42 5.42 0 1 1 0 10.84 5.42 5.42 0 0 1 0-10.84zm0 8.94a3.52 3.52 0 1 0 0-7.04 3.52 3.52 0 0 0 0 7.04zm6.9-9.15a1.27 1.27 0 1 1-2.53 0 1.27 1.27 0 0 1 2.53 0z"/></svg>
       @fu.dahong
     </a>
-    <p class="role hero-el" style="--d:.36s"><span class="prompt" aria-hidden="true">&gt;</span> <span class="typed" aria-hidden="true"><span id="rolePre"></span><span id="roleSwap"></span><span id="roleSuf"></span></span><span class="sr-only" data-cms="role_sr" data-vi="Sinh viên Khoa học Máy tính và An ninh mạng, định hướng blue team / an ninh phòng thủ.">Computer Science and Cyber Security student, focused on blue team / defensive security.</span></p>
+    <p class="role hero-el" style="--d:.36s"><span class="prompt" aria-hidden="true">&gt;</span> <span class="typed" aria-hidden="true"><span id="rolePre"></span><span id="roleSwap">Computer Science</span><span id="roleSuf"> student · blue team / defensive security</span></span><span class="sr-only" data-cms="role_sr" data-vi="Sinh viên Khoa học Máy tính và An ninh mạng, định hướng blue team / an ninh phòng thủ.">Computer Science and Cyber Security student, focused on blue team / defensive security.</span></p>
     <p class="lede hero-el" style="--d:.46s" data-cms="lede" data-vi="Tôi xây dựng sản phẩm trên web, và đang học cách bảo vệ chúng. Một sinh viên năm nhất ngành khoa học máy tính tại Thành phố Hồ Chí Minh, bắt đầu <strong>làm việc thật sự</strong> từ sớm — và đang hướng tới an ninh phòng thủ một cách <strong>có chủ đích</strong>.">I build things on the web, and I'm learning to defend them. A first-year computer science student in Ho Chi Minh City who started doing <strong>real work</strong> early — and is heading, <strong>deliberately</strong>, toward defensive security.</p>
     <div class="cta-row hero-el" style="--d:.56s">
       <a href="#journey" class="btn btn-primary" data-vi="Đọc hành trình →">Read the journey →</a>
@@ -514,7 +514,8 @@
   .tel-srctitle{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint-deco);margin-bottom:16px}
   .tel-srctitle b{color:var(--ink-faint);font-weight:500}
   .src-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin:0;padding:0}
-  .src-row{display:grid;grid-template-columns:18px minmax(0,1fr);gap:13px;align-items:start;opacity:0;transform:translateY(8px);transition:opacity .5s var(--ease-in),transform .5s var(--ease-in);transition-delay:calc(var(--i,0) * 70ms)}
+  .src-row{display:grid;grid-template-columns:18px minmax(0,1fr);gap:13px;align-items:start;transition:opacity .5s var(--ease-in),transform .5s var(--ease-in);transition-delay:calc(var(--i,0) * 70ms)}
+  .js .src-row{opacity:0;transform:translateY(8px)}
   .tel-sources.lit .src-row{opacity:1;transform:none}
   .src-rank{font-family:var(--mono);font-size:11px;color:var(--ink-faint-deco);text-align:right;font-variant-numeric:tabular-nums;line-height:1.2;padding-top:2px}
   .src-row.top1 .src-rank{color:var(--amber-text)}
@@ -524,7 +525,8 @@
   .src-name .src-cc{color:var(--ink-faint);font-size:11.5px}
   .src-num{font-family:var(--mono);font-size:12.5px;color:var(--amber-text);font-variant-numeric:tabular-nums;flex-shrink:0}
   .src-track{position:relative;height:7px;border-radius:999px;background:var(--bg-line);overflow:hidden}
-  .src-fill{position:absolute;inset:0 auto 0 0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--blue-deep),var(--blue));box-shadow:0 0 14px -2px rgba(77,163,255,.5);transition:width 1.15s var(--ease-in);transition-delay:calc(var(--i,0) * 70ms)}
+  .src-fill{position:absolute;inset:0 auto 0 0;width:var(--w,100%);border-radius:999px;background:linear-gradient(90deg,var(--blue-deep),var(--blue));box-shadow:0 0 14px -2px rgba(77,163,255,.5);transition:width 1.15s var(--ease-in);transition-delay:calc(var(--i,0) * 70ms)}
+  .js .src-fill{width:0}
   .src-row.top1 .src-fill{background:linear-gradient(90deg,var(--blue),var(--amber));box-shadow:0 0 16px -2px rgba(240,179,87,.4)}
   .tel-sources.lit .src-fill{width:var(--w,0%)}
   @media(max-width:560px){ .src-meta{flex-wrap:wrap;gap:2px 10px} .src-name{white-space:normal} }
@@ -536,12 +538,12 @@
       <div class="tel-eyebrow" data-vi="// Đo lường tấn công — máy chủ của tôi">// Threat telemetry — my server</div>
       <div class="tel-live"><span class="dot"></span> <span data-vi="ảnh chụp · phân tích offline">snapshot · analyzed offline</span></div>
     </div>
-    <div class="tel-readout" id="telReadout" aria-hidden="true">…</div>
+    <div class="tel-readout" id="telReadout" aria-hidden="true">inbound · <span class="rk">AS63949 Akamai</span> · <span class="rc">United States</span> · <span class="rn">62,798</span> hits on root</div>
     <div class="tel-stats">
-      <div class="tel-stat"><b data-count="291215">0</b><span data-vi="lần thử đăng nhập “root” — đều thất bại">attempts to log in as “root” — all failed</span></div>
-      <div class="tel-stat"><b data-count="400000" data-suffix="+">0</b><span data-vi="tổng lần đăng nhập SSH thất bại">total failed SSH logins</span></div>
-      <div class="tel-stat"><b data-count="8" data-suffix="+">0</b><span data-vi="quốc gia nguồn tấn công">source countries</span></div>
-      <div class="tel-stat"><b data-count="62798">0</b><span data-vi="số đòn nhiều nhất từ một IP">most attempts from one IP</span></div>
+      <div class="tel-stat"><b data-count="291215">291,215</b><span data-vi="lần thử đăng nhập “root” — đều thất bại">attempts to log in as “root” — all failed</span></div>
+      <div class="tel-stat"><b data-count="400000" data-suffix="+">400,000+</b><span data-vi="tổng lần đăng nhập SSH thất bại">total failed SSH logins</span></div>
+      <div class="tel-stat"><b data-count="8" data-suffix="+">8+</b><span data-vi="quốc gia nguồn tấn công">source countries</span></div>
+      <div class="tel-stat"><b data-count="62798">62,798</b><span data-vi="số đòn nhiều nhất từ một mạng (AS)">most from one network (AS)</span></div>
     </div>
     <div class="tel-verdict" data-vi="Áp lực dồn vào các dải IP đám mây (Akamai · Linode · Azure · Hetzner) — thuê rẻ hoặc bị chiếm quyền — chứ không phải mạng dân cư. Đây là botnet tự động, không phải tấn công nhắm mục tiêu.">Pressure concentrates in cloud-hosted ranges (Akamai · Linode · Azure · Hetzner) — rented or compromised — not residential ISPs. The signature of automated botnets, not a targeted attack.</div>
     <div class="tel-foot">
@@ -551,15 +553,15 @@
     <div class="tel-sources" id="telSources" role="group" aria-label="Top attacking sources by failed login attempts">
       <div class="tel-srctitle" data-vi="// Nguồn tấn công nhiều nhất — <b>theo số lần thử (ảnh chụp)</b>">// Top attacking sources — <b>by attempts (snapshot)</b></div>
       <ol class="src-list">
-        <li class="src-row top1" data-hits="62798" aria-label="1. AS63949 Akamai, United States: 62,798 attempts"><span class="src-rank">01</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Akamai <span class="src-cc">· United States</span></span><span class="src-num">62,798</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
-        <li class="src-row" data-hits="62231" aria-label="2. AS63949 Linode, United States: 62,231 attempts"><span class="src-rank">02</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Linode <span class="src-cc">· United States</span></span><span class="src-num">62,231</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
-        <li class="src-row" data-hits="25728" aria-label="3. AS133385 Atom, Myanmar: 25,728 attempts"><span class="src-rank">03</span><div class="src-main"><div class="src-meta"><span class="src-name">AS133385 Atom <span class="src-cc">· Myanmar</span></span><span class="src-num">25,728</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
-        <li class="src-row" data-hits="24679" aria-label="4. AS197769 VPS, Slovenia: 24,679 attempts"><span class="src-rank">04</span><div class="src-main"><div class="src-meta"><span class="src-name">AS197769 VPS <span class="src-cc">· Slovenia</span></span><span class="src-num">24,679</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
-        <li class="src-row" data-hits="19214" aria-label="5. AS63949 Akamai, Netherlands: 19,214 attempts"><span class="src-rank">05</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Akamai <span class="src-cc">· Netherlands</span></span><span class="src-num">19,214</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
-        <li class="src-row" data-hits="18001" aria-label="6. AS138692, Bangladesh: 18,001 attempts"><span class="src-rank">06</span><div class="src-main"><div class="src-meta"><span class="src-name">AS138692 <span class="src-cc">· Bangladesh</span></span><span class="src-num">18,001</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
-        <li class="src-row" data-hits="15632" aria-label="7. AS153013 GTSC, Vietnam: 15,632 attempts"><span class="src-rank">07</span><div class="src-main"><div class="src-meta"><span class="src-name">AS153013 GTSC <span class="src-cc">· Vietnam</span></span><span class="src-num">15,632</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
-        <li class="src-row" data-hits="9763" aria-label="8. AS8075 Azure, Ireland: 9,763 attempts"><span class="src-rank">08</span><div class="src-main"><div class="src-meta"><span class="src-name">AS8075 Azure <span class="src-cc">· Ireland</span></span><span class="src-num">9,763</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
-        <li class="src-row" data-hits="5131" aria-label="9. AS24940 Hetzner, Finland: 5,131 attempts"><span class="src-rank">09</span><div class="src-main"><div class="src-meta"><span class="src-name">AS24940 Hetzner <span class="src-cc">· Finland</span></span><span class="src-num">5,131</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row top1" data-hits="62798" style="--w:100%" aria-label="1. AS63949 Akamai, United States: 62,798 attempts"><span class="src-rank">01</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Akamai <span class="src-cc">· United States</span></span><span class="src-num">62,798</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="62231" style="--w:99.1%" aria-label="2. AS63949 Linode, United States: 62,231 attempts"><span class="src-rank">02</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Linode <span class="src-cc">· United States</span></span><span class="src-num">62,231</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="25728" style="--w:41%" aria-label="3. AS133385 Atom, Myanmar: 25,728 attempts"><span class="src-rank">03</span><div class="src-main"><div class="src-meta"><span class="src-name">AS133385 Atom <span class="src-cc">· Myanmar</span></span><span class="src-num">25,728</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="24679" style="--w:39.3%" aria-label="4. AS197769 VPS, Slovenia: 24,679 attempts"><span class="src-rank">04</span><div class="src-main"><div class="src-meta"><span class="src-name">AS197769 VPS <span class="src-cc">· Slovenia</span></span><span class="src-num">24,679</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="19214" style="--w:30.6%" aria-label="5. AS63949 Akamai, Netherlands: 19,214 attempts"><span class="src-rank">05</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Akamai <span class="src-cc">· Netherlands</span></span><span class="src-num">19,214</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="18001" style="--w:28.7%" aria-label="6. AS138692, Bangladesh: 18,001 attempts"><span class="src-rank">06</span><div class="src-main"><div class="src-meta"><span class="src-name">AS138692 <span class="src-cc">· Bangladesh</span></span><span class="src-num">18,001</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="15632" style="--w:24.9%" aria-label="7. AS153013 GTSC, Vietnam: 15,632 attempts"><span class="src-rank">07</span><div class="src-main"><div class="src-meta"><span class="src-name">AS153013 GTSC <span class="src-cc">· Vietnam</span></span><span class="src-num">15,632</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="9763" style="--w:15.5%" aria-label="8. AS8075 Azure, Ireland: 9,763 attempts"><span class="src-rank">08</span><div class="src-main"><div class="src-meta"><span class="src-name">AS8075 Azure <span class="src-cc">· Ireland</span></span><span class="src-num">9,763</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="5131" style="--w:8.2%" aria-label="9. AS24940 Hetzner, Finland: 5,131 attempts"><span class="src-rank">09</span><div class="src-main"><div class="src-meta"><span class="src-name">AS24940 Hetzner <span class="src-cc">· Finland</span></span><span class="src-num">5,131</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
       </ol>
     </div>
   </div>
@@ -577,6 +579,7 @@
   var sec=document.getElementById('telemetry');
   if(sec){
     var stats=[].slice.call(sec.querySelectorAll('[data-count]')), fired=false;
+    if(!rm){ stats.forEach(function(el){ el.textContent='0'; }); }  // real values baked in HTML for no-JS/crawlers; reset so JS counts up from 0
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting&&!fired){ fired=true; stats.forEach(countUp); io.disconnect(); } }); },{threshold:.35});
       io.observe(sec);
@@ -818,90 +821,6 @@
 
 </main>
 
-<style>
-  .cmdk-fab{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:55;display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--ink-dim);background:color-mix(in srgb,var(--bg-soft) 88%,transparent);border:1px solid var(--bg-line);border-radius:11px;padding:9px 12px;cursor:pointer;backdrop-filter:blur(6px);box-shadow:var(--card-shadow);transition:border-color .2s var(--ease),color .2s var(--ease),transform .2s var(--ease)}
-  .cmdk-fab:hover{border-color:var(--blue);color:var(--ink);transform:translateY(-1px)}
-  .cmdk-fab kbd{font-family:var(--mono);font-size:11px;background:var(--bg-line);border-radius:5px;padding:1px 6px;color:var(--ink)}
-  .cmdk-ovl{position:fixed;inset:0;z-index:71;display:none;align-items:flex-start;justify-content:center;background:rgba(5,11,20,.6);backdrop-filter:blur(5px);padding:13vh 16px 16px}
-  .cmdk-ovl.open{display:flex}
-  .cmdk{width:100%;max-width:560px;background:var(--bg-soft);border:1px solid var(--bg-line);border-radius:16px;overflow:hidden;box-shadow:0 30px 80px -22px rgba(0,0,0,.75);animation:cmdkIn .18s var(--ease)}
-  @keyframes cmdkIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-  .cmdk-in{display:flex;align-items:center;gap:10px;padding:15px 17px;border-bottom:1px solid var(--bg-line)}
-  .cmdk-in .pr{font-family:var(--mono);color:var(--blue)}
-  .cmdk-in input{flex:1;background:transparent;border:none;outline:none;color:var(--ink);font-family:var(--body);font-size:15px;min-width:0}
-  .cmdk-list{max-height:46vh;overflow-y:auto;padding:8px}
-  .cmdk-item{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:10px;cursor:pointer;color:var(--ink-dim);font-size:14px}
-  .cmdk-item .ci{width:18px;text-align:center;color:var(--ink-faint);font-family:var(--mono);font-size:13px}
-  .cmdk-item.sel,.cmdk-item:hover{background:rgba(77,163,255,.12);color:var(--ink)}
-  .cmdk-empty{padding:20px;text-align:center;color:var(--ink-faint);font-size:13px}
-  @media(hover:none){.cmdk-fab kbd{display:none}}
-  @media(prefers-reduced-motion:reduce){.cmdk-fab{transition:none}.cmdk{animation:none}}
-</style>
-<button class="cmdk-fab" id="cmdkFab" type="button" aria-haspopup="dialog" aria-label="Open command palette"><span class="cmdk-fab-t" data-vi="Lệnh">Commands</span><kbd id="cmdkKbd">Ctrl K</kbd></button>
-<div class="cmdk-ovl" id="cmdkOvl" role="dialog" aria-modal="true" aria-label="Command palette">
-  <div class="cmdk">
-    <div class="cmdk-in"><span class="pr" aria-hidden="true">&gt;</span><input id="cmdkInput" type="text" role="combobox" aria-controls="cmdkList" aria-expanded="true" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Jump to… or type a command"></div>
-    <div class="cmdk-list" id="cmdkList" role="listbox" aria-label="Commands"></div>
-  </div>
-</div>
-<script>
-(function(){
-  var fab=document.getElementById('cmdkFab'), ovl=document.getElementById('cmdkOvl'),
-      input=document.getElementById('cmdkInput'), list=document.getElementById('cmdkList');
-  if(!fab||!ovl||!input||!list) return;
-  // platform-aware shortcut hint: ⌘K on Mac, Ctrl K on Windows/Linux, hidden on touch (tap to open)
-  (function(){ var kb=document.getElementById('cmdkKbd'); if(!kb) return;
-    var touch=window.matchMedia&&window.matchMedia('(hover:none)').matches;
-    var mac=/Mac|iPhone|iPad|iPod/i.test((navigator.platform||'')+' '+(navigator.userAgent||''));
-    if(touch){ kb.style.display='none'; } else if(mac){ kb.textContent='⌘K'; } else { kb.textContent='Ctrl K'; }
-  })();
-  function go(id){ var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
-  function ext(u){ window.open(u,'_blank','noopener'); }
-  function click(id){ var el=document.getElementById(id); if(el) el.click(); }
-  var CMDS=[
-    {ic:'›',en:'Story',vi:'Câu chuyện',run:function(){go('story');}},
-    {ic:'›',en:'Selected work',vi:'Dự án tiêu biểu',run:function(){go('work');}},
-    {ic:'›',en:'Journey',vi:'Hành trình',run:function(){go('journey');}},
-    {ic:'›',en:'Focus & skills',vi:'Lĩnh vực & kỹ năng',run:function(){go('focus');}},
-    {ic:'›',en:'Writing',vi:'Bài viết',run:function(){go('writing');}},
-    {ic:'›',en:'Contact',vi:'Liên hệ',run:function(){go('contact');}},
-    {ic:'◎',en:'Threat telemetry',vi:'Đo lường tấn công',run:function(){go('telemetry');}},
-    {ic:'⌥',en:'Toggle language (EN / VI)',vi:'Đổi ngôn ngữ (EN / VI)',run:function(){click('langBtn');}},
-    {ic:'✉',en:'Copy email',vi:'Sao chép email',run:function(){click('emailBtn');}},
-    {ic:'⎇',en:'GitHub',vi:'GitHub',run:function(){ext('https://github.com/daihongphucecq');}},
-    {ic:'◍',en:'Instagram',vi:'Instagram',run:function(){ext('https://instagram.com/fu.dahong');}},
-    {ic:'▦',en:'Photobook ULAW',vi:'Photobook ULAW',run:function(){location.href='/photobook-ulaw';}}
-  ];
-  function isVi(){ return document.documentElement.lang==='vi'; }
-  function label(c){ return isVi()? c.vi : c.en; }
-  function match(c,q){ q=(q||'').toLowerCase().trim(); if(!q) return true; return (c.en+' '+c.vi).toLowerCase().indexOf(q)>-1; }
-  var filtered=[], sel=0;
-  function render(){
-    filtered=CMDS.filter(function(c){return match(c,input.value);});
-    if(sel>=filtered.length) sel=filtered.length-1; if(sel<0) sel=0;
-    if(!filtered.length){ list.innerHTML='<div class="cmdk-empty">'+(isVi()?'Không có lệnh phù hợp':'No matching command')+'</div>'; return; }
-    list.innerHTML=filtered.map(function(c,i){ return '<div class="cmdk-item'+(i===sel?' sel':'')+'" role="option" data-i="'+i+'"><span class="ci" aria-hidden="true">'+c.ic+'</span><span>'+label(c)+'</span></div>'; }).join('');
-  }
-  var lastFocus=null;
-  function open(){ if(document.querySelector('.reader')||document.body.classList.contains('nav-open')) return; lastFocus=document.activeElement; ovl.classList.add('open'); input.value=''; sel=0; render(); input.focus(); }
-  function close(){ ovl.classList.remove('open'); if(lastFocus&&lastFocus.focus) try{lastFocus.focus();}catch(e){} }
-  function run(){ var c=filtered[sel]; if(!c) return; close(); setTimeout(c.run,10); }
-  fab.addEventListener('click',open);
-  input.addEventListener('input',function(){ sel=0; render(); });
-  input.addEventListener('keydown',function(e){
-    if(e.key==='ArrowDown'){ sel=Math.min(filtered.length-1,sel+1); render(); e.preventDefault(); }
-    else if(e.key==='ArrowUp'){ sel=Math.max(0,sel-1); render(); e.preventDefault(); }
-    else if(e.key==='Enter'){ run(); e.preventDefault(); }
-    else if(e.key==='Escape'){ close(); e.preventDefault(); e.stopPropagation(); }
-  });
-  list.addEventListener('click',function(e){ var it=e.target.closest&&e.target.closest('.cmdk-item'); if(!it) return; sel=parseInt(it.getAttribute('data-i'))||0; run(); });
-  ovl.addEventListener('click',function(e){ if(e.target===ovl) close(); });
-  document.addEventListener('keydown',function(e){
-    if((e.metaKey||e.ctrlKey)&&(e.key==='k'||e.key==='K')){ if(document.querySelector('.reader'))return; e.preventDefault(); ovl.classList.contains('open')?close():open(); }
-    else if(e.key==='/'&&!ovl.classList.contains('open')){ var t=(e.target.tagName||''); if(t==='INPUT'||t==='TEXTAREA'||e.target.isContentEditable) return; if(document.querySelector('.reader'))return; e.preventDefault(); open(); }
-  });
-})();
-</script>
 
 <footer>
   <div class="wrap">
@@ -1135,7 +1054,6 @@
     if(!pal||!input||!listEl)return;                 // markup missing → no-op
 
     var open=false, items=[], sel=-1, palFocus, scrimT, RECENT_KEY='cmdk_recent';
-    var coarse=window.matchMedia&&window.matchMedia('(hover:none)').matches;
 
     // bilingual label helper
     function L(en,vi){return LANG==='vi'?(vi||en):en;}
@@ -1308,7 +1226,7 @@
 
     // ---- open / close (focus trap) --------------------------------------
     function openPal(){
-      if(open)return; open=true;
+      if(open||document.querySelector('.reader'))return; open=true;
       palFocus=document.activeElement;
       if(typeof closeNav==='function' && document.body.classList.contains('nav-open')) closeNav(false);
       clearTimeout(scrimT);
@@ -1317,7 +1235,8 @@
       input.placeholder=L(input.getAttribute('placeholder'),input.getAttribute('data-ph-vi'));
       document.body.style.overflow='hidden';
       render('');
-      requestAnimationFrame(function(){ pal.classList.add('open'); input.value=''; input.focus(); });
+      input.value=''; input.focus();   // focus synchronously (in the tap/key gesture) so iOS Safari raises the keyboard
+      requestAnimationFrame(function(){ pal.classList.add('open'); });
     }
     function closePal(){
       if(!open)return; open=false;
@@ -1350,7 +1269,7 @@
 
     // mobile/touch trigger
     if(fab){
-      if(coarse){ fab.hidden=false; }
+      fab.hidden=false;  // show the search FAB on every device → desktop discoverability of the palette
       if(LANG==='vi'){ fab.setAttribute('aria-label',fab.getAttribute('data-vi-label')); }
       fab.addEventListener('click',openPal);
     }
