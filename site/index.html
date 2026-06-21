@@ -41,6 +41,10 @@
 <!-- Favicons / manifest -->
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="dhf.io.vn">
 <link rel="manifest" href="/site.webmanifest">
 
 <style>
@@ -199,6 +203,14 @@
   .card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s var(--ease);background:radial-gradient(450px circle at var(--mx,50%) var(--my,50%),rgba(77,163,255,.12),transparent 42%)}
   .card:hover::after{opacity:1}
   @media(hover:none){.card::after{display:none}}
+  /* 3D pointer tilt — JS adds .tilt-on while the pointer is over a card and feeds --rx/--ry.
+     This rule wins over the .card:hover translateY (line above) by specificity, so the whole
+     transform is composed in ONE place: lift + tilt, with no inline-style tug-of-war.
+     --ty keeps the existing -4px lift; --rx/--ry are clamped to ±5deg by the JS. */
+  .card{--tlt-rx:0deg;--tlt-ry:0deg;--tlt-ty:0px;transform-style:preserve-3d}
+  .card.tilt-on{transform:perspective(900px) translateY(var(--tlt-ty,-4px)) rotateX(var(--tlt-rx)) rotateY(var(--tlt-ry));transition:transform .12s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease);will-change:transform}
+  /* keep the spotlight glow visually "above" the tilted plane so it reads as light, not paint */
+  .card.tilt-on::after{transform:translateZ(1px)}
   .card .role-line{font-family:var(--mono);font-size:12px;color:var(--blue);margin-bottom:12px;letter-spacing:.04em}
   .card h3{font-family:var(--display);font-size:var(--step-1);font-weight:600;margin-bottom:10px}
   .card p{color:var(--ink-dim);font-size:.95rem;margin-bottom:16px}
@@ -313,6 +325,78 @@
     .js .hero-el{opacity:1;transform:none;animation:none}
     .log .line{transition:none;transform:scaleY(1)}
     .btn:hover,.btn-primary:hover,.btn-ghost:hover,.card:hover,.handle:hover,.skill:hover{transform:none}
+    /* never tilt under reduced motion — collapse any active tilt back to a flat plane */
+    .card.tilt-on{transform:none;transition:none}
+    .card.tilt-on::after{transform:none}
+  }
+
+  /* ============================================================
+     ⌘K COMMAND PALETTE — a SOC-console jump menu.
+     Self-contained: own z-index layer (70, above reader=60),
+     own focus trap + ARIA. Reuses existing tokens only. ===== */
+  .cmdk{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-start;justify-content:center;padding:clamp(56px,12vh,140px) 18px 24px}
+  .cmdk[hidden]{display:none}
+  .cmdk-scrim{position:absolute;inset:0;background:rgba(5,11,20,.66);-webkit-backdrop-filter:blur(7px) saturate(.9);backdrop-filter:blur(7px) saturate(.9);opacity:0;transition:opacity .2s var(--ease)}
+  .cmdk.open .cmdk-scrim{opacity:1}
+  .cmdk-panel{position:relative;width:min(620px,100%);max-height:min(70vh,560px);display:flex;flex-direction:column;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--bg-soft) 94%,#000),var(--bg-soft));
+    border:1px solid var(--bg-line);border-radius:16px;overflow:hidden;
+    box-shadow:0 30px 80px -28px rgba(0,0,0,.85),0 0 0 1px rgba(77,163,255,.06) inset;
+    transform:translateY(-8px) scale(.985);opacity:0;transition:transform .22s var(--ease),opacity .22s var(--ease)}
+  .cmdk.open .cmdk-panel{transform:none;opacity:1}
+  /* hairline accent at the top edge, echoing nav.bar.scrolled */
+  .cmdk-panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue) 50%,transparent);opacity:.6}
+
+  .cmdk-search{display:flex;align-items:center;gap:11px;padding:15px 16px;border-bottom:1px solid var(--bg-line)}
+  .cmdk-prompt{font-family:var(--mono);font-size:16px;color:var(--blue);line-height:1;flex-shrink:0}
+  .cmdk-input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--ink);
+    font-family:var(--display);font-size:1.05rem;line-height:1.4;padding:2px 0}
+  .cmdk-input::placeholder{color:var(--ink-faint);opacity:1}
+  .cmdk-esc{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);border:1px solid var(--bg-line);border-radius:6px;padding:3px 7px;letter-spacing:.04em;flex-shrink:0}
+
+  .cmdk-list{list-style:none;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:8px;margin:0;flex:1;scrollbar-width:thin;scrollbar-color:var(--bg-line) transparent}
+  .cmdk-list::-webkit-scrollbar{width:9px}
+  .cmdk-list::-webkit-scrollbar-thumb{background:var(--bg-line);border-radius:9px;border:3px solid transparent;background-clip:content-box}
+  .cmdk-group{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint-deco);padding:12px 10px 6px}
+  .cmdk-group:first-child{padding-top:4px}
+
+  .cmdk-item{display:flex;align-items:center;gap:13px;padding:10px 12px;border-radius:10px;cursor:pointer;color:var(--ink-dim);scroll-margin:12px;position:relative}
+  .cmdk-item .ic{width:30px;height:30px;flex-shrink:0;display:grid;place-items:center;border:1px solid var(--bg-line);border-radius:8px;color:var(--ink-faint);transition:color .18s var(--ease),border-color .18s var(--ease)}
+  .cmdk-item .ic svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .cmdk-item .tx{min-width:0;flex:1}
+  .cmdk-item .nm{font-size:.94rem;color:var(--ink);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cmdk-item .sub{font-family:var(--mono);font-size:11px;color:var(--ink-faint);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+  .cmdk-item .nm mark{background:transparent;color:var(--blue);font-weight:600}
+  .cmdk-item .go{font-family:var(--mono);font-size:11px;color:var(--ink-faint-deco);opacity:0;flex-shrink:0;transition:opacity .18s var(--ease),transform .18s var(--ease);transform:translateX(-4px)}
+  .cmdk-item.sel{background:color-mix(in srgb,var(--blue) 12%,transparent);color:var(--ink)}
+  .cmdk-item.sel .ic{color:var(--blue);border-color:var(--blue-deep)}
+  .cmdk-item.sel .go{opacity:1;transform:none}
+  @media(hover:hover){.cmdk-item:hover{background:color-mix(in srgb,var(--blue) 8%,transparent)}}
+
+  .cmdk-empty{font-family:var(--mono);font-size:13px;color:var(--ink-faint);text-align:center;padding:28px 16px 34px}
+  .cmdk-foot{display:flex;gap:18px;flex-wrap:wrap;padding:11px 16px;border-top:1px solid var(--bg-line);font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+  .cmdk-foot kbd{display:inline-block;border:1px solid var(--bg-line);border-radius:5px;padding:1px 5px;color:var(--ink-dim);margin-right:2px}
+  .cmdk-foot i{font-style:normal}
+  @media(max-width:560px){ .cmdk-foot{display:none} .cmdk-panel{max-height:78vh} }
+
+  /* mobile/touch trigger — only shown by JS on coarse pointers */
+  .cmdk-fab{position:fixed;right:16px;bottom:16px;z-index:35;width:48px;height:48px;border-radius:50%;
+    background:color-mix(in srgb,var(--bg-soft) 86%,transparent);border:1px solid var(--bg-line);color:var(--ink-dim);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:pointer;display:grid;place-items:center;
+    box-shadow:0 10px 30px -12px rgba(0,0,0,.7);transition:color .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease)}
+  .cmdk-fab[hidden]{display:none}
+  .cmdk-fab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .cmdk-fab:active{transform:scale(.94)}
+  @media(hover:hover){.cmdk-fab:hover{color:var(--blue);border-color:var(--blue)}}
+  /* keep the fab clear of the iOS home indicator */
+  @supports(padding:max(0px)){ .cmdk-fab{bottom:max(16px,env(safe-area-inset-bottom))} }
+
+  @media(prefers-reduced-motion:reduce){
+    .cmdk-scrim,.cmdk-panel{transition:none}
+    .cmdk-panel{transform:none}
+    .cmdk-item .go{transition:none}
+    .cmdk-fab{transition:none}
+    html.cmdk-smooth-off{scroll-behavior:auto}
   }
 </style>
 </head>
@@ -348,6 +432,38 @@
 </nav>
 
 <div id="navScrim" class="nav-scrim" hidden></div>
+
+<!-- ⌘K command palette (a tasteful "console" jump-menu). Built/opened by JS; inert + hidden until then. -->
+<div id="cmdk" class="cmdk" hidden role="dialog" aria-modal="true" aria-labelledby="cmdkLabel">
+  <div class="cmdk-scrim" data-cmdk-close></div>
+  <div class="cmdk-panel" role="document">
+    <h2 id="cmdkLabel" class="sr-only" data-vi="Bảng lệnh — tìm & điều hướng">Command palette — search &amp; navigate</h2>
+    <div class="cmdk-search">
+      <span class="cmdk-prompt" aria-hidden="true">&gt;</span>
+      <input id="cmdkInput" class="cmdk-input" type="text" role="combobox"
+             aria-expanded="true" aria-controls="cmdkList" aria-autocomplete="list"
+             aria-activedescendant="" autocomplete="off" autocapitalize="off"
+             autocorrect="off" spellcheck="false"
+             placeholder="Search sections, posts, actions…"
+             data-ph-vi="Tìm mục, bài viết, hành động…">
+      <kbd class="cmdk-esc" aria-hidden="true">esc</kbd>
+    </div>
+    <ul id="cmdkList" class="cmdk-list" role="listbox" aria-label="Commands"></ul>
+    <div class="cmdk-empty" id="cmdkEmpty" hidden data-vi="Không có kết quả">No results</div>
+    <div class="cmdk-foot" aria-hidden="true">
+      <span><kbd>↑</kbd><kbd>↓</kbd> <i data-vi="di chuyển">move</i></span>
+      <span><kbd>↵</kbd> <i data-vi="chọn">select</i></span>
+      <span><kbd>esc</kbd> <i data-vi="đóng">close</i></span>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile/touch affordance: phones have no ⌘K, so surface a small trigger. JS reveals it. -->
+<button id="cmdkFab" class="cmdk-fab" type="button" hidden
+        aria-haspopup="dialog" aria-controls="cmdk"
+        aria-label="Open command palette" data-vi-label="Mở bảng lệnh">
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.7" y2="16.7"/></svg>
+</button>
 
 <main id="main">
 
@@ -393,6 +509,26 @@
   .tel-note{font-family:var(--mono);font-size:11px;color:var(--ink-faint-deco)}
   .tel-link{font-family:var(--mono);font-size:12px;color:var(--blue)}
   @media(max-width:720px){ .tel-stats{grid-template-columns:repeat(2,1fr);gap:16px} .tel-readout{font-size:12px} }
+  /* Top attacking sources — animated bar race (snapshot data; own .src-*/.tel-sources namespace) */
+  .tel-sources{margin:30px 0 4px;padding-top:24px;border-top:1px solid var(--bg-line)}
+  .tel-srctitle{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint-deco);margin-bottom:16px}
+  .tel-srctitle b{color:var(--ink-faint);font-weight:500}
+  .src-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin:0;padding:0}
+  .src-row{display:grid;grid-template-columns:18px minmax(0,1fr);gap:13px;align-items:start;opacity:0;transform:translateY(8px);transition:opacity .5s var(--ease-in),transform .5s var(--ease-in);transition-delay:calc(var(--i,0) * 70ms)}
+  .tel-sources.lit .src-row{opacity:1;transform:none}
+  .src-rank{font-family:var(--mono);font-size:11px;color:var(--ink-faint-deco);text-align:right;font-variant-numeric:tabular-nums;line-height:1.2;padding-top:2px}
+  .src-row.top1 .src-rank{color:var(--amber-text)}
+  .src-main{min-width:0}
+  .src-meta{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .src-name{font-family:var(--mono);font-size:12.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .src-name .src-cc{color:var(--ink-faint);font-size:11.5px}
+  .src-num{font-family:var(--mono);font-size:12.5px;color:var(--amber-text);font-variant-numeric:tabular-nums;flex-shrink:0}
+  .src-track{position:relative;height:7px;border-radius:999px;background:var(--bg-line);overflow:hidden}
+  .src-fill{position:absolute;inset:0 auto 0 0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--blue-deep),var(--blue));box-shadow:0 0 14px -2px rgba(77,163,255,.5);transition:width 1.15s var(--ease-in);transition-delay:calc(var(--i,0) * 70ms)}
+  .src-row.top1 .src-fill{background:linear-gradient(90deg,var(--blue),var(--amber));box-shadow:0 0 16px -2px rgba(240,179,87,.4)}
+  .tel-sources.lit .src-fill{width:var(--w,0%)}
+  @media(max-width:560px){ .src-meta{flex-wrap:wrap;gap:2px 10px} .src-name{white-space:normal} }
+  @media(prefers-reduced-motion:reduce){ .src-row{opacity:1;transform:none;transition:none} .src-fill{transition:none} .tel-sources.lit .src-fill{width:var(--w,0%)} }
 </style>
 <section id="telemetry" class="telemetry reveal" aria-label="Threat telemetry from my server">
   <div class="wrap">
@@ -411,6 +547,20 @@
     <div class="tel-foot">
       <div class="tel-note" data-vi="// Trích từ log xác thực máy chủ của tôi, phân tích offline. Tĩnh — vì riêng tư &amp; hiệu năng.">// From my own server’s auth logs, parsed offline. Static — for privacy &amp; performance.</div>
       <a class="tel-link" href="#writing" id="telLink" data-vi="Đọc phân tích đầy đủ →">Read the full analysis →</a>
+    </div>
+    <div class="tel-sources" id="telSources" role="group" aria-label="Top attacking sources by failed login attempts">
+      <div class="tel-srctitle" data-vi="// Nguồn tấn công nhiều nhất — <b>theo số lần thử (ảnh chụp)</b>">// Top attacking sources — <b>by attempts (snapshot)</b></div>
+      <ol class="src-list">
+        <li class="src-row top1" data-hits="62798" aria-label="1. AS63949 Akamai, United States: 62,798 attempts"><span class="src-rank">01</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Akamai <span class="src-cc">· United States</span></span><span class="src-num">62,798</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="62231" aria-label="2. AS63949 Linode, United States: 62,231 attempts"><span class="src-rank">02</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Linode <span class="src-cc">· United States</span></span><span class="src-num">62,231</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="25728" aria-label="3. AS133385 Atom, Myanmar: 25,728 attempts"><span class="src-rank">03</span><div class="src-main"><div class="src-meta"><span class="src-name">AS133385 Atom <span class="src-cc">· Myanmar</span></span><span class="src-num">25,728</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="24679" aria-label="4. AS197769 VPS, Slovenia: 24,679 attempts"><span class="src-rank">04</span><div class="src-main"><div class="src-meta"><span class="src-name">AS197769 VPS <span class="src-cc">· Slovenia</span></span><span class="src-num">24,679</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="19214" aria-label="5. AS63949 Akamai, Netherlands: 19,214 attempts"><span class="src-rank">05</span><div class="src-main"><div class="src-meta"><span class="src-name">AS63949 Akamai <span class="src-cc">· Netherlands</span></span><span class="src-num">19,214</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="18001" aria-label="6. AS138692, Bangladesh: 18,001 attempts"><span class="src-rank">06</span><div class="src-main"><div class="src-meta"><span class="src-name">AS138692 <span class="src-cc">· Bangladesh</span></span><span class="src-num">18,001</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="15632" aria-label="7. AS153013 GTSC, Vietnam: 15,632 attempts"><span class="src-rank">07</span><div class="src-main"><div class="src-meta"><span class="src-name">AS153013 GTSC <span class="src-cc">· Vietnam</span></span><span class="src-num">15,632</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="9763" aria-label="8. AS8075 Azure, Ireland: 9,763 attempts"><span class="src-rank">08</span><div class="src-main"><div class="src-meta"><span class="src-name">AS8075 Azure <span class="src-cc">· Ireland</span></span><span class="src-num">9,763</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+        <li class="src-row" data-hits="5131" aria-label="9. AS24940 Hetzner, Finland: 5,131 attempts"><span class="src-rank">09</span><div class="src-main"><div class="src-meta"><span class="src-name">AS24940 Hetzner <span class="src-cc">· Finland</span></span><span class="src-num">5,131</span></div><div class="src-track"><span class="src-fill" aria-hidden="true"></span></div></div></li>
+      </ol>
     </div>
   </div>
 </section>
@@ -445,6 +595,40 @@
     out.innerHTML=line(atk[0]);
     if(!rm){ out.style.transition='opacity .18s'; setInterval(function(){ i=(i+1)%atk.length; out.style.opacity='0'; setTimeout(function(){ out.innerHTML=line(atk[i]); out.style.opacity='1'; },180); },2600); }
   }
+})();
+</script>
+<script>
+/* Top attacking sources — bar race. Standalone IIFE; widths derived from data-hits
+   (same numbers as the telemetry atk[] array). No invented data, no server call. */
+(function(){
+  var host=document.getElementById('telSources'); if(!host)return;
+  var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fmt(n){return n.toLocaleString('en-US');}
+  var rows=[].slice.call(host.querySelectorAll('.src-row')); if(!rows.length)return;
+  var peak=0; rows.forEach(function(r){var n=parseInt(r.getAttribute('data-hits'),10)||0;if(n>peak)peak=n;}); if(peak<=0)peak=1;
+  rows.forEach(function(r,idx){
+    var n=parseInt(r.getAttribute('data-hits'),10)||0;
+    r.style.setProperty('--i',idx);
+    r.style.setProperty('--w',Math.max(3,Math.round(n/peak*1000)/10)+'%');
+  });
+  if(!rm){ rows.forEach(function(r){var el=r.querySelector('.src-num');if(el)el.textContent='0';}); }
+  function countRow(r){
+    var el=r.querySelector('.src-num'), n=parseInt(r.getAttribute('data-hits'),10)||0; if(!el)return;
+    if(rm){el.textContent=fmt(n);return;}
+    var start=null, idx=parseInt(r.style.getPropertyValue('--i'),10)||0, delay=idx*70;
+    requestAnimationFrame(function step(ts){
+      if(start===null)start=ts;
+      var t=ts-start-delay; if(t<0){requestAnimationFrame(step);return;}
+      var p=Math.min(1,t/1150), e=1-Math.pow(1-p,3);
+      el.textContent=fmt(Math.round(n*e)); if(p<1)requestAnimationFrame(step);
+    });
+  }
+  var ran=false;
+  function run(){ if(ran)return; ran=true; host.classList.add('lit'); rows.forEach(countRow); }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ run(); io.disconnect(); } }); },{threshold:.3});
+    io.observe(host);
+  } else { run(); }
 })();
 </script>
 
@@ -634,6 +818,91 @@
 
 </main>
 
+<style>
+  .cmdk-fab{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:55;display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--ink-dim);background:color-mix(in srgb,var(--bg-soft) 88%,transparent);border:1px solid var(--bg-line);border-radius:11px;padding:9px 12px;cursor:pointer;backdrop-filter:blur(6px);box-shadow:var(--card-shadow);transition:border-color .2s var(--ease),color .2s var(--ease),transform .2s var(--ease)}
+  .cmdk-fab:hover{border-color:var(--blue);color:var(--ink);transform:translateY(-1px)}
+  .cmdk-fab kbd{font-family:var(--mono);font-size:11px;background:var(--bg-line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  .cmdk-ovl{position:fixed;inset:0;z-index:71;display:none;align-items:flex-start;justify-content:center;background:rgba(5,11,20,.6);backdrop-filter:blur(5px);padding:13vh 16px 16px}
+  .cmdk-ovl.open{display:flex}
+  .cmdk{width:100%;max-width:560px;background:var(--bg-soft);border:1px solid var(--bg-line);border-radius:16px;overflow:hidden;box-shadow:0 30px 80px -22px rgba(0,0,0,.75);animation:cmdkIn .18s var(--ease)}
+  @keyframes cmdkIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+  .cmdk-in{display:flex;align-items:center;gap:10px;padding:15px 17px;border-bottom:1px solid var(--bg-line)}
+  .cmdk-in .pr{font-family:var(--mono);color:var(--blue)}
+  .cmdk-in input{flex:1;background:transparent;border:none;outline:none;color:var(--ink);font-family:var(--body);font-size:15px;min-width:0}
+  .cmdk-list{max-height:46vh;overflow-y:auto;padding:8px}
+  .cmdk-item{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:10px;cursor:pointer;color:var(--ink-dim);font-size:14px}
+  .cmdk-item .ci{width:18px;text-align:center;color:var(--ink-faint);font-family:var(--mono);font-size:13px}
+  .cmdk-item.sel,.cmdk-item:hover{background:rgba(77,163,255,.12);color:var(--ink)}
+  .cmdk-empty{padding:20px;text-align:center;color:var(--ink-faint);font-size:13px}
+  @media(hover:none){.cmdk-fab kbd{display:none}}
+  @media(prefers-reduced-motion:reduce){.cmdk-fab{transition:none}.cmdk{animation:none}}
+</style>
+<button class="cmdk-fab" id="cmdkFab" type="button" aria-haspopup="dialog" aria-label="Open command palette"><span class="cmdk-fab-t" data-vi="Lệnh">Commands</span><kbd id="cmdkKbd">Ctrl K</kbd></button>
+<div class="cmdk-ovl" id="cmdkOvl" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="cmdk">
+    <div class="cmdk-in"><span class="pr" aria-hidden="true">&gt;</span><input id="cmdkInput" type="text" role="combobox" aria-controls="cmdkList" aria-expanded="true" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Jump to… or type a command"></div>
+    <div class="cmdk-list" id="cmdkList" role="listbox" aria-label="Commands"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var fab=document.getElementById('cmdkFab'), ovl=document.getElementById('cmdkOvl'),
+      input=document.getElementById('cmdkInput'), list=document.getElementById('cmdkList');
+  if(!fab||!ovl||!input||!list) return;
+  // platform-aware shortcut hint: ⌘K on Mac, Ctrl K on Windows/Linux, hidden on touch (tap to open)
+  (function(){ var kb=document.getElementById('cmdkKbd'); if(!kb) return;
+    var touch=window.matchMedia&&window.matchMedia('(hover:none)').matches;
+    var mac=/Mac|iPhone|iPad|iPod/i.test((navigator.platform||'')+' '+(navigator.userAgent||''));
+    if(touch){ kb.style.display='none'; } else if(mac){ kb.textContent='⌘K'; } else { kb.textContent='Ctrl K'; }
+  })();
+  function go(id){ var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+  function ext(u){ window.open(u,'_blank','noopener'); }
+  function click(id){ var el=document.getElementById(id); if(el) el.click(); }
+  var CMDS=[
+    {ic:'›',en:'Story',vi:'Câu chuyện',run:function(){go('story');}},
+    {ic:'›',en:'Selected work',vi:'Dự án tiêu biểu',run:function(){go('work');}},
+    {ic:'›',en:'Journey',vi:'Hành trình',run:function(){go('journey');}},
+    {ic:'›',en:'Focus & skills',vi:'Lĩnh vực & kỹ năng',run:function(){go('focus');}},
+    {ic:'›',en:'Writing',vi:'Bài viết',run:function(){go('writing');}},
+    {ic:'›',en:'Contact',vi:'Liên hệ',run:function(){go('contact');}},
+    {ic:'◎',en:'Threat telemetry',vi:'Đo lường tấn công',run:function(){go('telemetry');}},
+    {ic:'⌥',en:'Toggle language (EN / VI)',vi:'Đổi ngôn ngữ (EN / VI)',run:function(){click('langBtn');}},
+    {ic:'✉',en:'Copy email',vi:'Sao chép email',run:function(){click('emailBtn');}},
+    {ic:'⎇',en:'GitHub',vi:'GitHub',run:function(){ext('https://github.com/daihongphucecq');}},
+    {ic:'◍',en:'Instagram',vi:'Instagram',run:function(){ext('https://instagram.com/fu.dahong');}},
+    {ic:'▦',en:'Photobook ULAW',vi:'Photobook ULAW',run:function(){location.href='/photobook-ulaw';}}
+  ];
+  function isVi(){ return document.documentElement.lang==='vi'; }
+  function label(c){ return isVi()? c.vi : c.en; }
+  function match(c,q){ q=(q||'').toLowerCase().trim(); if(!q) return true; return (c.en+' '+c.vi).toLowerCase().indexOf(q)>-1; }
+  var filtered=[], sel=0;
+  function render(){
+    filtered=CMDS.filter(function(c){return match(c,input.value);});
+    if(sel>=filtered.length) sel=filtered.length-1; if(sel<0) sel=0;
+    if(!filtered.length){ list.innerHTML='<div class="cmdk-empty">'+(isVi()?'Không có lệnh phù hợp':'No matching command')+'</div>'; return; }
+    list.innerHTML=filtered.map(function(c,i){ return '<div class="cmdk-item'+(i===sel?' sel':'')+'" role="option" data-i="'+i+'"><span class="ci" aria-hidden="true">'+c.ic+'</span><span>'+label(c)+'</span></div>'; }).join('');
+  }
+  var lastFocus=null;
+  function open(){ if(document.querySelector('.reader')||document.body.classList.contains('nav-open')) return; lastFocus=document.activeElement; ovl.classList.add('open'); input.value=''; sel=0; render(); input.focus(); }
+  function close(){ ovl.classList.remove('open'); if(lastFocus&&lastFocus.focus) try{lastFocus.focus();}catch(e){} }
+  function run(){ var c=filtered[sel]; if(!c) return; close(); setTimeout(c.run,10); }
+  fab.addEventListener('click',open);
+  input.addEventListener('input',function(){ sel=0; render(); });
+  input.addEventListener('keydown',function(e){
+    if(e.key==='ArrowDown'){ sel=Math.min(filtered.length-1,sel+1); render(); e.preventDefault(); }
+    else if(e.key==='ArrowUp'){ sel=Math.max(0,sel-1); render(); e.preventDefault(); }
+    else if(e.key==='Enter'){ run(); e.preventDefault(); }
+    else if(e.key==='Escape'){ close(); e.preventDefault(); e.stopPropagation(); }
+  });
+  list.addEventListener('click',function(e){ var it=e.target.closest&&e.target.closest('.cmdk-item'); if(!it) return; sel=parseInt(it.getAttribute('data-i'))||0; run(); });
+  ovl.addEventListener('click',function(e){ if(e.target===ovl) close(); });
+  document.addEventListener('keydown',function(e){
+    if((e.metaKey||e.ctrlKey)&&(e.key==='k'||e.key==='K')){ if(document.querySelector('.reader'))return; e.preventDefault(); ovl.classList.contains('open')?close():open(); }
+    else if(e.key==='/'&&!ovl.classList.contains('open')){ var t=(e.target.tagName||''); if(t==='INPUT'||t==='TEXTAREA'||e.target.isContentEditable) return; if(document.querySelector('.reader'))return; e.preventDefault(); open(); }
+  });
+})();
+</script>
+
 <footer>
   <div class="wrap">
     <div class="meta">© 2026 Dai Hong Phuc · <span>dhf.io.vn</span></div>
@@ -804,16 +1073,288 @@
     document.querySelectorAll('.radar .sweep,.radar .blip').forEach(function(el){el.style.animationPlayState=st;});
   });
 
-  // ---- card spotlight: a soft glow tracks the pointer (Linear/Vercel-style) ----
-  if(window.matchMedia&&!window.matchMedia('(hover:none)').matches){
-    document.addEventListener('pointermove',function(e){
-      var c=e.target.closest&&e.target.closest('.card');
+  // ---- card spotlight + subtle 3D tilt: one rAF-throttled pointer handler ----
+  // Feature-gated to fine-hover pointers (skips touch). Spotlight (--mx/--my) and tilt
+  // (--tlt-rx/--tlt-ry via the .tilt-on class) are computed together so we never run two
+  // listeners or fight the CSS :hover lift. Reduced-motion disables tilt but keeps the glow.
+  var canHover=window.matchMedia&&window.matchMedia('(hover:none)').matches===false;
+  if(canHover){
+    var TILT_MAX=5;            // degrees — tasteful ceiling, never theatrical
+    var curCard=null,frame=0,px=0,py=0;
+    function applyTilt(){
+      frame=0;
+      if(!curCard)return;
+      var r=curCard.getBoundingClientRect();
+      if(!r.width||!r.height)return;
+      var nx=(px-r.left)/r.width, ny=(py-r.top)/r.height;     // 0..1 within the card
+      // spotlight position (works even under reduced motion)
+      curCard.style.setProperty('--mx',(nx*100).toFixed(2)+'%');
+      curCard.style.setProperty('--my',(ny*100).toFixed(2)+'%');
+      if(reduce.matches)return;                               // glow only, no tilt
+      // map cursor to rotation: left edge tilts right, top edge tilts toward viewer
+      var ry=(nx-0.5)*2*TILT_MAX;                             // rotateY: horizontal lean
+      var rx=(0.5-ny)*2*TILT_MAX;                             // rotateX: vertical lean
+      curCard.style.setProperty('--tlt-ry',ry.toFixed(2)+'deg');
+      curCard.style.setProperty('--tlt-rx',rx.toFixed(2)+'deg');
+      curCard.style.setProperty('--tlt-ty','-4px');           // preserve the existing lift
+      if(!curCard.classList.contains('tilt-on'))curCard.classList.add('tilt-on');
+    }
+    function resetCard(c){
       if(!c)return;
-      var r=c.getBoundingClientRect();
-      c.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(2)+'%');
-      c.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(2)+'%');
+      c.classList.remove('tilt-on');
+      c.style.removeProperty('--tlt-rx');c.style.removeProperty('--tlt-ry');c.style.removeProperty('--tlt-ty');
+    }
+    document.addEventListener('pointermove',function(e){
+      if(e.pointerType==='touch')return;                     // belt-and-suspenders vs touch
+      var c=e.target.closest&&e.target.closest('.card');
+      if(c!==curCard){resetCard(curCard);curCard=c;}
+      if(!curCard)return;
+      px=e.clientX;py=e.clientY;
+      if(!frame)frame=requestAnimationFrame(applyTilt);
     },{passive:true});
+    // leaving a card / the document, or losing focus → relax to flat (CSS transitions it back)
+    document.addEventListener('pointerleave',function(){resetCard(curCard);curCard=null;});
+    document.addEventListener('pointercancel',function(){resetCard(curCard);curCard=null;});
+    window.addEventListener('blur',function(){resetCard(curCard);curCard=null;});
+    // if the user flips reduced-motion on mid-session, drop any active tilt immediately
+    var onRM=function(){if(reduce.matches)resetCard(curCard);};
+    if(reduce.addEventListener)reduce.addEventListener('change',onRM);
+    else if(reduce.addListener)reduce.addListener(onRM);
   }
+
+  // ---- ⌘K command palette (SOC console) ----------------------------------
+  // Self-contained jump menu. Lives in the same IIFE scope so it can reuse
+  // applyLang / LANG / langBtn / emailBtn / closeNav directly. Builds its
+  // command list lazily at open-time, so it always reflects hydrated posts.
+  (function cmdk(){
+    var pal=document.getElementById('cmdk');
+    var input=document.getElementById('cmdkInput');
+    var listEl=document.getElementById('cmdkList');
+    var emptyEl=document.getElementById('cmdkEmpty');
+    var fab=document.getElementById('cmdkFab');
+    if(!pal||!input||!listEl)return;                 // markup missing → no-op
+
+    var open=false, items=[], sel=-1, palFocus, scrimT, RECENT_KEY='cmdk_recent';
+    var coarse=window.matchMedia&&window.matchMedia('(hover:none)').matches;
+
+    // bilingual label helper
+    function L(en,vi){return LANG==='vi'?(vi||en):en;}
+
+    // ---- icons (inline, stroke = currentColor) ----
+    var I={
+      jump:'<polyline points="9 6 15 12 9 18"/>',
+      doc:'<path d="M7 3h7l4 4v14H7z"/><polyline points="14 3 14 7 18 7"/>',
+      lang:'<path d="M4 6h10"/><path d="M9 4v2c0 4-2.5 7-5 8"/><path d="M7 9c0 2.5 2 4.5 5 5.5"/><path d="M13 20l4-9 4 9"/><path d="M14.5 17h5"/>',
+      mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/>',
+      gh:'<path d="M9 19c-4 1.2-4-2-6-2.5"/><path d="M15 21v-3.2c0-1 .3-1.7-.6-2.3 2.7-.3 5.4-1.3 5.4-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C10.6 1.6 9.6 1.9 9.6 1.9a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 8.2 8.3c0 4.6 2.7 5.7 5.4 6-.6.5-.6 1-.6 1.6V21"/>',
+      cam:'<rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/>',
+      sun:'<circle cx="12" cy="12" r="4.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/>',
+      ig:'<rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/>'
+    };
+
+    // ---- static command set ---------------------------------------------
+    // Each: {id, group, en, vi, sub, icon, key (search haystack), run}
+    function go(hash){ return function(){ location.hash=hash; var t=document.querySelector(hash); if(t){ try{t.scrollIntoView({behavior:reduce.matches?'auto':'smooth',block:'start'});}catch(e){t.scrollIntoView();} } }; }
+    function ext(url){ return function(){ window.open(url,'_blank','noopener'); }; }
+
+    function buildBase(){
+      var nav=[
+        {g:'nav',en:'Story',vi:'Câu chuyện',ic:I.jump,run:go('#story'),key:'story who i am câu chuyện'},
+        {g:'nav',en:'Work',vi:'Dự án',ic:I.jump,run:go('#work'),key:'work projects dự án selected'},
+        {g:'nav',en:'Journey',vi:'Nhật ký',ic:I.jump,run:go('#journey'),key:'journey log timeline nhật ký'},
+        {g:'nav',en:'Threat telemetry',vi:'Đo lường tấn công',ic:I.jump,run:go('#telemetry'),key:'telemetry attacks ssh threat đo lường tấn công'},
+        {g:'nav',en:'Focus',vi:'Lĩnh vực',ic:I.jump,run:go('#focus'),key:'focus skills credentials lĩnh vực blue team'},
+        {g:'nav',en:'Contact',vi:'Liên hệ',ic:I.jump,run:go('#contact'),key:'contact email liên hệ connect'}
+      ];
+      var act=[
+        {g:'act',en:'Copy email',vi:'Sao chép email',sub:'daihongphucecq@gmail.com',ic:I.mail,
+         run:function(){ var b=document.getElementById('emailBtn'); if(b)b.click(); },key:'copy email mail sao chép liên hệ'},
+        {g:'act',en:(LANG==='vi'?'Switch to English':'Chuyển sang tiếng Việt'),
+              vi:(LANG==='vi'?'Switch to English':'Chuyển sang tiếng Việt'),
+         ic:I.lang,run:function(){ applyLang(LANG==='vi'?'en':'vi'); },key:'language english tiếng việt vietnamese ngôn ngữ lang vi en'},
+        {g:'act',en:'Open GitHub',vi:'Mở GitHub',sub:'@daihongphucecq',ic:I.gh,run:ext('https://github.com/daihongphucecq'),key:'github code repo git'},
+        {g:'act',en:'Open Instagram',vi:'Mở Instagram',sub:'@fu.dahong',ic:I.ig,run:ext('https://instagram.com/fu.dahong'),key:'instagram ig photos'},
+        {g:'act',en:'Open Photobook ULAW',vi:'Mở Photobook ULAW',sub:'/photobook-ulaw',ic:I.cam,run:function(){location.href='/photobook-ulaw';},key:'photobook ulaw photo album ảnh chụp'}
+      ];
+      // Theme toggle: ONLY if a real toggle exists (feature-detect). The site
+      // ships dark-only today, so we never expose a dead command.
+      var themeBtn=document.getElementById('themeBtn');
+      if(themeBtn){ act.splice(2,0,{g:'act',en:'Toggle theme',vi:'Đổi giao diện',ic:I.sun,
+        run:function(){ themeBtn.click(); },key:'theme dark light giao diện toggle appearance'}); }
+      return nav.concat(act);
+    }
+
+    // posts: reuse the REAL reader from hydrate.js when available
+    function buildPosts(){
+      var out=[], P=window.__POSTS;
+      if(!P||typeof window.openReader!=='function')return out;
+      Object.keys(P).forEach(function(slug){
+        var p=P[slug]; if(!p)return;
+        var t=(LANG==='vi'?(p.title_vi||p.title_en):p.title_en)||p.title_en||slug;
+        var ex=(LANG==='vi'?(p.excerpt_vi||p.excerpt_en):p.excerpt_en)||'';
+        out.push({g:'post',en:t,vi:t,sub:ex,ic:I.doc,
+          run:function(){ window.openReader(p); },
+          key:(t+' '+ex+' '+slug+' post write-up bài viết').toLowerCase()});
+      });
+      return out;
+    }
+
+    var GROUPS={nav:{en:'Navigate',vi:'Điều hướng'},post:{en:'Read',vi:'Bài viết'},act:{en:'Actions',vi:'Hành động'}};
+
+    // ---- fuzzy subsequence scorer (no deps) ------------------------------
+    // Returns {score, hit} where hit = positions matched in the display name,
+    // so we can highlight. Higher score = better; -1 = no match.
+    function score(q,name,hay){
+      q=q.toLowerCase();
+      if(!q)return {score:0,hit:null};
+      // first try to match within the visible name (for highlight)
+      var hit=fuzzy(q,name.toLowerCase());
+      if(hit){ return {score:hit.score+40,hit:hit.pos}; }      // name match ranks high
+      // else fall back to the wider haystack (keywords/excerpt) — no highlight
+      var h2=fuzzy(q,hay);
+      return h2?{score:h2.score,hit:null}:{score:-1,hit:null};
+    }
+    function fuzzy(q,s){
+      var qi=0,si=0,start=-1,end=-1,gaps=0,run=0,bestRun=0,pos=[];
+      while(qi<q.length&&si<s.length){
+        if(q[qi]===s[si]){ if(start<0)start=si; end=si; pos.push(si); qi++; run++; if(run>bestRun)bestRun=run; }
+        else{ if(qi>0)gaps++; run=0; }
+        si++;
+      }
+      if(qi<q.length)return null;                              // not all chars matched
+      // score: reward contiguous runs + early start, penalise spread
+      var sc=bestRun*8 - gaps - start*0.4 - (end-start);
+      return {score:sc,pos:pos};
+    }
+    function hl(name,pos){
+      if(!pos||!pos.length)return esc(name);
+      var set={}; pos.forEach(function(p){set[p]=1;});
+      var out='';
+      for(var i=0;i<name.length;i++){ out+= set[i]?('<mark>'+esc(name[i])+'</mark>'):esc(name[i]); }
+      return out;
+    }
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return c==='&'?'&amp;':c==='<'?'&lt;':c==='>'?'&gt;':'&quot;';}); }
+
+    // ---- recents (slug-free, by display key) -----------------------------
+    function getRecent(){ try{return JSON.parse(localStorage.getItem(RECENT_KEY)||'[]');}catch(e){return [];} }
+    function pushRecent(id){ try{var r=getRecent().filter(function(x){return x!==id;}); r.unshift(id); localStorage.setItem(RECENT_KEY,JSON.stringify(r.slice(0,4)));}catch(e){} }
+
+    // ---- render ----------------------------------------------------------
+    function render(q){
+      var all=buildBase().concat(buildPosts());
+      all.forEach(function(c){ c._id=c.g+':'+c.en; });
+      var rows;
+      if(q){
+        rows=[];
+        all.forEach(function(c){
+          var r=score(q,L(c.en,c.vi),(c.key||'')+' '+(c.sub||'').toLowerCase());
+          if(r.score>=0){ rows.push({c:c,s:r.score,hit:r.hit}); }
+        });
+        rows.sort(function(a,b){return b.s-a.s;});
+      }else{
+        // empty query → recents first, then everything in natural order
+        var rec=getRecent();
+        rows=all.slice().sort(function(a,b){
+          var ia=rec.indexOf(a._id), ib=rec.indexOf(b._id);
+          ia=ia<0?99:ia; ib=ib<0?99:ib;
+          return ia-ib;
+        }).map(function(c){return {c:c,s:0,hit:null};});
+      }
+
+      items=[]; sel=-1; listEl.innerHTML='';
+      if(!rows.length){ emptyEl.hidden=false; emptyEl.textContent=L('No results','Không có kết quả'); input.setAttribute('aria-activedescendant',''); return; }
+      emptyEl.hidden=true;
+
+      var lastG=null, idx=0;
+      rows.forEach(function(row){
+        var c=row.c;
+        if(c.g!==lastG && !q){ // group headings only when not searching (search = flat ranked)
+          lastG=c.g;
+          var h=document.createElement('li'); h.className='cmdk-group'; h.setAttribute('role','presentation');
+          h.textContent=L(GROUPS[c.g].en,GROUPS[c.g].vi); listEl.appendChild(h);
+        }
+        var li=document.createElement('li');
+        li.className='cmdk-item'; li.id='cmdk-opt-'+idx; li.setAttribute('role','option'); li.setAttribute('aria-selected','false');
+        var sub=c.sub?'<div class="sub">'+esc(c.sub)+'</div>':'';
+        li.innerHTML='<span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+c.ic+'</svg></span>'+
+                     '<span class="tx"><div class="nm">'+hl(L(c.en,c.vi),row.hit)+'</div>'+sub+'</span>'+
+                     '<span class="go" aria-hidden="true">↵</span>';
+        var myIdx=idx;
+        li.addEventListener('click',function(){ choose(myIdx); });
+        li.addEventListener('pointermove',function(){ if(sel!==myIdx)select(myIdx,false); });
+        listEl.appendChild(li);
+        items.push({el:li,cmd:c});
+        idx++;
+      });
+      select(0,false);
+    }
+
+    function select(i,scroll){
+      if(i<0||i>=items.length)return;
+      if(sel>=0&&items[sel]){items[sel].el.classList.remove('sel');items[sel].el.setAttribute('aria-selected','false');}
+      sel=i; var it=items[sel];
+      it.el.classList.add('sel'); it.el.setAttribute('aria-selected','true');
+      input.setAttribute('aria-activedescendant',it.el.id);
+      if(scroll!==false){ try{it.el.scrollIntoView({block:'nearest'});}catch(e){} }
+    }
+    function move(d){ if(!items.length)return; var n=sel+d; if(n<0)n=items.length-1; if(n>=items.length)n=0; select(n,true); }
+    function choose(i){
+      if(i==null)i=sel; if(i<0||!items[i])return;
+      var c=items[i].cmd; pushRecent(c._id);
+      closePal();
+      // run after the palette has closed + focus restored, so reader/nav land cleanly
+      setTimeout(function(){ try{c.run();}catch(e){} },reduce.matches?0:120);
+    }
+
+    // ---- open / close (focus trap) --------------------------------------
+    function openPal(){
+      if(open)return; open=true;
+      palFocus=document.activeElement;
+      if(typeof closeNav==='function' && document.body.classList.contains('nav-open')) closeNav(false);
+      clearTimeout(scrimT);
+      pal.hidden=false;
+      // refresh bilingual placeholder + footer each open
+      input.placeholder=L(input.getAttribute('placeholder'),input.getAttribute('data-ph-vi'));
+      document.body.style.overflow='hidden';
+      render('');
+      requestAnimationFrame(function(){ pal.classList.add('open'); input.value=''; input.focus(); });
+    }
+    function closePal(){
+      if(!open)return; open=false;
+      pal.classList.remove('open');
+      document.body.style.overflow='';
+      var done=function(){ pal.hidden=true; };
+      if(reduce.matches){ done(); } else { scrimT=setTimeout(done,200); }
+      if(palFocus&&palFocus.focus){ try{palFocus.focus();}catch(e){} }
+    }
+
+    // ---- events ----------------------------------------------------------
+    // open: Cmd/Ctrl+K (and "/" when not already typing in a field)
+    document.addEventListener('keydown',function(e){
+      var k=e.key;
+      if((e.metaKey||e.ctrlKey)&&(k==='k'||k==='K')){ e.preventDefault(); open?closePal():openPal(); return; }
+      if(!open && k==='/' && !/^(input|textarea|select)$/i.test((e.target.tagName||'')) && !e.target.isContentEditable){
+        e.preventDefault(); openPal(); return;
+      }
+      if(!open)return;
+      if(k==='Escape'){ e.preventDefault(); closePal(); }
+      else if(k==='ArrowDown'){ e.preventDefault(); move(1); }
+      else if(k==='ArrowUp'){ e.preventDefault(); move(-1); }
+      else if(k==='Enter'){ e.preventDefault(); choose(); }
+      else if(k==='Home'&&items.length){ e.preventDefault(); select(0,true); }
+      else if(k==='End'&&items.length){ e.preventDefault(); select(items.length-1,true); }
+      else if(k==='Tab'){ e.preventDefault(); move(e.shiftKey?-1:1); }  // trap: cycle options, never leave
+    });
+    input.addEventListener('input',function(){ render(input.value.trim()); });
+    pal.addEventListener('mousedown',function(e){ if(e.target.hasAttribute('data-cmdk-close'))closePal(); });
+
+    // mobile/touch trigger
+    if(fab){
+      if(coarse){ fab.hidden=false; }
+      if(LANG==='vi'){ fab.setAttribute('aria-label',fab.getAttribute('data-vi-label')); }
+      fab.addEventListener('click',openPal);
+    }
+  })();
 
   // ---- service worker: offline-capable, installable PWA ----
   if('serviceWorker' in navigator){
